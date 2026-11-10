@@ -8,7 +8,7 @@ import { Maximize2, X } from 'lucide-react'
 import type { ResearchFigure } from '@/types/research'
 
 // Recharts is only needed for the interactive figures; keep it out of the initial bundle.
-const ResearchChart = dynamic(() => import('./ResearchCharts'), {
+const ResearchChart = dynamic(() => import('./charts'), {
   ssr: false,
   loading: () => <div className="h-[300px] animate-pulse rounded-lg bg-neutral-100" />,
 })

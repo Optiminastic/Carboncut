@@ -498,6 +498,7 @@ export const nearRealTimeCarbonAccountingPaper: ResearchPaper = {
       height: 756,
       caption:
         'Estimated contribution of digital infrastructure and internet-based services to global CO₂e emissions.',
+      interactive: 'literature-share',
     },
     {
       number: 2,
@@ -514,6 +515,7 @@ export const nearRealTimeCarbonAccountingPaper: ResearchPaper = {
       width: 1720,
       height: 925,
       caption: 'Structural omissions introduced by conventional subsystem-focused accounting.',
+      interactive: 'boundary-omissions',
     },
     {
       number: 4,
@@ -521,6 +523,7 @@ export const nearRealTimeCarbonAccountingPaper: ResearchPaper = {
       width: 1674,
       height: 825,
       caption: 'Relative emissions contribution across the full transmission circuit.',
+      interactive: 'component-shares',
     },
     {
       number: 5,
@@ -528,6 +531,7 @@ export const nearRealTimeCarbonAccountingPaper: ResearchPaper = {
       width: 1856,
       height: 894,
       caption: 'Methodological capabilities of existing and proposed approaches.',
+      interactive: 'capability-matrix',
     },
     {
       number: 6,
@@ -544,6 +548,7 @@ export const nearRealTimeCarbonAccountingPaper: ResearchPaper = {
       width: 1907,
       height: 986,
       caption: 'Allocation philosophy underpinning the hybrid approach.',
+      interactive: 'allocation-philosophy',
     },
     {
       number: 8,
@@ -552,6 +557,7 @@ export const nearRealTimeCarbonAccountingPaper: ResearchPaper = {
       height: 1144,
       caption:
         'Comparison of legacy batch-based internet carbon accounting and the proposed hybrid deterministic-batch framework, highlighting differences in system boundary coverage, temporal resolution, and attribution logic.',
+      interactive: 'legacy-vs-hybrid',
     },
     {
       number: 9,
@@ -568,6 +574,7 @@ export const nearRealTimeCarbonAccountingPaper: ResearchPaper = {
       width: 1762,
       height: 894,
       caption: 'Temporal granularity achievable under full event-level attribution.',
+      interactive: 'event-heatmap',
     },
     {
       number: 11,
@@ -575,6 +582,7 @@ export const nearRealTimeCarbonAccountingPaper: ResearchPaper = {
       width: 1589,
       height: 916,
       caption: 'The experimental architecture used to generate representative pilot data.',
+      interactive: 'experimental-architecture',
     },
     {
       number: 12,
@@ -583,6 +591,7 @@ export const nearRealTimeCarbonAccountingPaper: ResearchPaper = {
       height: 1189,
       caption:
         'Coupling between grid carbon intensity and attributed emissions under near-real-time methods.',
+      interactive: 'grid-coupling',
     },
     {
       number: 13,
@@ -599,6 +608,7 @@ export const nearRealTimeCarbonAccountingPaper: ResearchPaper = {
       width: 1869,
       height: 805,
       caption: 'Heatmap of data confidence across components and signal types.',
+      interactive: 'data-confidence',
     },
     {
       number: 15,
@@ -606,6 +616,7 @@ export const nearRealTimeCarbonAccountingPaper: ResearchPaper = {
       width: 1607,
       height: 1006,
       caption: 'A practical roadmap from batch estimation to full deterministic accounting.',
+      interactive: 'roadmap',
     },
   ],
   tables: [

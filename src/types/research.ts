@@ -16,7 +16,21 @@ export interface ResearchSection {
 }
 
 export type InteractiveChartId =
-  'weekly-series' | 'method-error' | 'component-error' | 'telemetry-coverage'
+  | 'literature-share'
+  | 'weekly-series'
+  | 'boundary-omissions'
+  | 'component-shares'
+  | 'capability-matrix'
+  | 'method-error'
+  | 'allocation-philosophy'
+  | 'legacy-vs-hybrid'
+  | 'component-error'
+  | 'event-heatmap'
+  | 'experimental-architecture'
+  | 'grid-coupling'
+  | 'telemetry-coverage'
+  | 'data-confidence'
+  | 'roadmap'
 
 export interface ResearchFigure {
   number: number

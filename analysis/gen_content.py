@@ -62,7 +62,16 @@ FIGURE_AFTER = {
     15: "The final stage full event",
 }
 TABLE_AFTER = {"table-1": "To move beyond aggregate error values", "table-2": "Because the results are derived"}
-INTERACTIVE = {2: "weekly-series", 6: "method-error", 9: "component-error", 13: "telemetry-coverage"}
+INTERACTIVE = {
+    1: "literature-share", 2: "weekly-series", 3: "boundary-omissions", 4: "component-shares",
+    5: "capability-matrix", 6: "method-error", 7: "allocation-philosophy", 8: "legacy-vs-hybrid",
+    9: "component-error", 10: "event-heatmap", 11: "experimental-architecture", 12: "grid-coupling",
+    13: "telemetry-coverage", 14: "data-confidence", 15: "roadmap",
+}
+# Assumed observability (telemetry quality, 0-1) per component; matches figs.py Figure 7.
+OBSERVABILITY = {"Compute": 0.9, "CDN": 0.85, "Storage": 0.6, "Network": 0.3, "Device": 0.25}
+DETERMINISTIC_IN_M2 = {"Compute", "CDN"}
+CONFIDENCE_SIGNALS = ["Activity volume", "Energy model", "Routing / location", "Grid intensity"]
 INTERACTIVE_CAPTION = {
     2: "One week of hourly emissions for an example workload: the reference series, conventional batch accounting "
        "(annual) and Method 1 (monthly totals plus event-level web traffic). Batch methods smooth emissions over time, "
@@ -236,10 +245,51 @@ def chart_data():
     cov = [{"coverage": round(c["coverage"] * 100), "method2": round(c["mae_m2"], 1)} for c in r["coverage"]]
     refs = {k: round(r["summary"][m]["mae"], 1) for k, m in
             [("batch", "Batch"), ("method1", "Method 1"), ("method3", "Method 3")]}
+    extras = extra_chart_data(r, s, start)
     b, m2 = r["summary"]["Batch"]["mae"], r["summary"]["Method 2"]["mae"]
     headline = {"batchMae": round(b, 1), "method2Mae": round(m2, 1), "errorRatio": round(b / m2, 1),
                 "m2VsM3P": round(r["tests"]["M2_vs_M3"]["p"], 2), "workloads": r["n_workloads"]}
-    return weekly, methods, comps, cov, refs, headline
+    return weekly, methods, comps, cov, refs, headline, extras
+
+
+def extra_chart_data(r, s, week_start):
+    comps = r["components"]
+    true_sh, batch_sh = r["shares_mean"], r["summary"]["Batch"]["annual_pct_of_true"]
+    boundary = [
+        {"row": "Reference (full circuit)", **{c: round(true_sh[c], 1) for c in comps}},
+        {"row": "Batch estimate", **{c: round(batch_sh[c], 1) for c in comps}},
+    ]
+    sh = s["shares"] * 100
+    shares = sorted(
+        ({"component": c, "mean": round(float(sh[:, i].mean()), 1),
+          "p5": round(float(np.percentile(sh[:, i], 5)), 1),
+          "p95": round(float(np.percentile(sh[:, i], 95)), 1)} for i, c in enumerate(comps)),
+        key=lambda d: -d["mean"])
+    cv = {c: float(np.std(s[f"truth_{c}"]) / np.mean(s[f"truth_{c}"])) for c in comps}
+    cv_max = max(cv.values())
+    allocation = [{"component": c, "cv": round(cv[c], 2), "variability": round(cv[c] / cv_max, 3),
+                   "observability": OBSERVABILITY[c], "deterministic": c in DETERMINISTIC_IN_M2} for c in comps]
+    heat = [round(float(v) * 1000, 1) for v in s["est_Method_3"]]
+    sl = slice(week_start, week_start + 72)
+    truth = sum(s[f"truth_{c}"] for c in comps)[sl] * 1000
+    days = ["Mon", "Tue", "Wed"]
+    coupling = [{"hour": i, "label": f"{days[i // 24]} {i % 24:02d}:00",
+                 "gridIntensity": round(float(s["ci"][0][sl][i]), 1),
+                 "reference": round(float(truth[i]), 2),
+                 "batch": round(float(s["est_Batch"][sl][i] * 1000), 2),
+                 "method2": round(float(s["est_Method_2"][sl][i] * 1000), 2),
+                 "method3": round(float(s["est_Method_3"][sl][i] * 1000), 2)} for i in range(72)]
+    n = r["noise"]
+    pct = lambda v: round(v * 100)
+    confidence = {"signals": CONFIDENCE_SIGNALS, "rows": [
+        {"component": "Compute", "values": [pct(n["util"]), pct(n["util"]), 0, pct(n["ci_signal"])]},
+        {"component": "Storage", "values": [pct(n["storage_meter"]), pct(n["storage_meter"]), 0, pct(n["ci_signal"])]},
+        {"component": "Network", "values": [pct(n["bytes"]), pct(n["route_energy"]), pct(n["route_energy"]), pct(n["ci_signal"])]},
+        {"component": "CDN", "values": [pct(n["cdn_logs"]), pct(n["cdn_logs"]), pct(n["bytes"]), pct(n["ci_signal"])]},
+        {"component": "Device", "values": [pct(n["bytes"]), pct(n["device_class"]), pct(n["bytes"]), pct(n["ci_signal"])]},
+    ]}
+    return dict(boundary=boundary, shares=shares, allocation=allocation, heat=heat,
+                coupling=coupling, confidence=confidence, n_workloads=r["n_workloads"])
 
 
 def main(unpacked: Path, fe: Path):
@@ -250,19 +300,19 @@ def main(unpacked: Path, fe: Path):
     t1, t2 = table_rows(doc, 0), table_rows(doc, 1)
     figures = []
     for n in range(1, 16):
-        w, h = Image.open(HERE / "figures" / f"fig{n:02d}.png").size
+        w, h = Image.open(fe / "public/papers" / SLUG / f"fig{n:02d}.png").size
         fig = {"number": n, "src": f"/papers/{SLUG}/fig{n:02d}.png", "width": w, "height": h, "caption": caps[n]}
         if n in CAPTION_WEB:
             fig["caption"] = CAPTION_WEB[n]
         if n in INTERACTIVE:
             fig["interactive"] = INTERACTIVE[n]
-            fig["caption"] = INTERACTIVE_CAPTION[n]
+            fig["caption"] = INTERACTIVE_CAPTION.get(n, fig["caption"])
         figures.append(fig)
     tables = [
         {"id": "table-1", "number": 1, "caption": table_caption(doc, "Table 1."), "header": t1[0], "rows": t1[1:]},
         {"id": "table-2", "number": 2, "caption": table_caption(doc, "Table 2."), "header": t2[0], "rows": t2[1:]},
     ]
-    weekly, methods, comps, cov, cov_refs, headline = chart_data()
+    weekly, methods, comps, cov, cov_refs, headline, ex = chart_data()
 
     out_dir = fe / "src/constants/papers"
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -334,6 +384,24 @@ export const componentError = {ts(comps)}
 /** Method 2 error by telemetry coverage (%), with reference levels of the other approaches. */
 export const telemetryCoverage = {ts(cov)}
 export const telemetryCoverageReferences = {ts(cov_refs)} as const
+
+/** Annual emissions by component as % of the reference total: full circuit vs batch estimate. */
+export const boundaryOmissions = {ts(ex["boundary"])}
+
+/** Share of annual reference emissions by component across {ex["n_workloads"]} workloads (%). */
+export const componentShares = {ts(ex["shares"])}
+
+/** Temporal variability (CV, also normalised 0-1) vs assumed observability per component. */
+export const allocationPhilosophy = {ts(ex["allocation"])}
+
+/** Hourly emissions under Method 3 for the example workload: 365 days x 24 hours, g CO2e per hour. */
+export const eventHeatmap: number[] = {json.dumps(ex["heat"])}
+
+/** Three weekdays of origin grid intensity (gCO2/kWh) and attributed emissions (g CO2e per hour). */
+export const gridCoupling = {ts(ex["coupling"])}
+
+/** Assumed hourly uncertainty (1 sigma, %) by component and signal; 0 = known exactly. */
+export const dataConfidence = {ts(ex["confidence"])}
 """
     (out_dir / "nearRealTimeCarbonAccounting.ts").write_text(content, encoding="utf8")
     (out_dir / "nearRealTimeCarbonAccountingCharts.ts").write_text(data, encoding="utf8")
