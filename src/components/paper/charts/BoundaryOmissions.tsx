@@ -55,7 +55,7 @@ function Chart() {
       </ResponsiveContainer>
       <p className="mt-1 text-sm text-neutral-600">
         The batch estimate captures{' '}
-        <strong className="font-semibold text-[#080c04]">{pct(total(batch))}</strong> of reference
+        <strong className="font-semibold text-ink">{pct(total(batch))}</strong> of reference
         emissions; CDN and device emissions are outside its boundary.
       </p>
     </div>

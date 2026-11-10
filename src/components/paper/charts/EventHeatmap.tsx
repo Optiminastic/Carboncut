@@ -78,7 +78,7 @@ function Chart() {
       <p className="mb-2 h-5 text-sm tabular-nums text-neutral-700" aria-live="polite">
         {hover ? (
           <>
-            <span className="font-semibold text-[#080c04]">
+            <span className="font-semibold text-ink">
               {dayLabel(hover.day)}, {String(hover.hour).padStart(2, '0')}:00 UTC
             </span>
             : {valueAt(hover.day, hover.hour).toFixed(1)} g CO₂e per hour

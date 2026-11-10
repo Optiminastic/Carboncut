@@ -39,7 +39,7 @@ function Column({
 }) {
   return (
     <div className="rounded-xl border border-neutral-200 p-4">
-      <p className="text-sm font-semibold text-[#080c04]">{title}</p>
+      <p className="text-sm font-semibold text-ink">{title}</p>
       <ul className="mt-3 space-y-2">
         {COMPONENTS.map((c) => {
           const [treatment, detail] = c[side]
@@ -54,7 +54,7 @@ function Column({
           )
         })}
       </ul>
-      <p className="mt-3 rounded-lg bg-[#080c04] px-3 py-2 text-center text-xs font-medium text-white">
+      <p className="mt-3 rounded-lg bg-ink px-3 py-2 text-center text-xs font-medium text-white">
         {outcome}
       </p>
     </div>

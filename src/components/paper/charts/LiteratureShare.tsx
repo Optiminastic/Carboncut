@@ -28,7 +28,7 @@ function Chart() {
             className="grid gap-2 sm:grid-cols-[200px_minmax(0,1fr)] sm:items-center"
           >
             <div className="text-sm">
-              <p className="font-medium text-[#080c04]">{r.source}</p>
+              <p className="font-medium text-ink">{r.source}</p>
               <p className="text-xs text-neutral-500">{r.detail}</p>
             </div>
             <div className="relative h-7" title={`${r.source}: ${label(r)}`}>
@@ -45,7 +45,7 @@ function Chart() {
                 />
               )}
               <span
-                className="absolute top-1/2 -translate-y-1/2 pl-3 text-xs font-semibold tabular-nums text-[#080c04]"
+                className="absolute top-1/2 -translate-y-1/2 pl-3 text-xs font-semibold tabular-nums text-ink"
                 style={{ left: toPct(r.high) }}
               >
                 {label(r)}

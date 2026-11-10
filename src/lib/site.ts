@@ -19,8 +19,4 @@ function resolveSiteUrl() {
 export const SITE_URL = resolveSiteUrl().replace(/\/$/, '')
 
 export const SITE_NAME = 'CarbonCut Research'
-export const SITE_DESCRIPTION =
-  'Research from CarbonCut on real-time, auditable carbon accounting for digital infrastructure.'
-export const MAIN_SITE_URL = 'https://carboncut.co'
-
-export const paperPath = (slug: string) => `/papers/${slug}`
+export const PUBLISHER = 'Carbon Tech International Limited'

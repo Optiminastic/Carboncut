@@ -30,10 +30,10 @@ function PointTooltip({ active, payload }: { active?: boolean; payload?: { paylo
   if (!active || !p) return null
   return (
     <div className="rounded-lg border border-neutral-200 bg-white px-3 py-2 text-xs shadow-md">
-      <p className="font-semibold text-[#080c04]">{p.component}</p>
+      <p className="font-semibold text-ink">{p.component}</p>
       <p className="mt-1 text-neutral-600">Hourly variability (CV): {p.cv.toFixed(2)}</p>
       <p className="text-neutral-600">Observability: {p.observability.toFixed(2)}</p>
-      <p className="mt-1 font-medium text-[#080c04]">
+      <p className="mt-1 font-medium text-ink">
         {p.deterministic ? 'Deterministic in Method 2' : 'Batch proxy in Method 2'}
       </p>
     </div>

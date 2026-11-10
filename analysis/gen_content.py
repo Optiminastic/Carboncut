@@ -234,7 +234,9 @@ def chart_data():
     days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
     weekly = [{"hour": i, "label": f"{days[i // 24]} {i % 24:02d}:00", "reference": round(float(truth[i]), 2),
                "batch": round(float(s["est_Batch"][sl][i] * 1000), 2),
-               "method1": round(float(s["est_Method_1"][sl][i] * 1000), 2)} for i in range(7 * 24)]
+               "method1": round(float(s["est_Method_1"][sl][i] * 1000), 2),
+               "method2": round(float(s["est_Method_2"][sl][i] * 1000), 2),
+               "method3": round(float(s["est_Method_3"][sl][i] * 1000), 2)} for i in range(7 * 24)]
     methods = []
     for key, name in [("Batch", "Conventional batch"), ("Method 1", "Method 1"), ("Method 2", "Method 2"),
                       ("Method 3", "Method 3")]:
@@ -248,8 +250,21 @@ def chart_data():
     extras = extra_chart_data(r, s, start)
     b, m2 = r["summary"]["Batch"]["mae"], r["summary"]["Method 2"]["mae"]
     headline = {"batchMae": round(b, 1), "method2Mae": round(m2, 1), "errorRatio": round(b / m2, 1),
-                "m2VsM3P": round(r["tests"]["M2_vs_M3"]["p"], 2), "workloads": r["n_workloads"]}
+                "m2VsM3P": round(r["tests"]["M2_vs_M3"]["p"], 2), "workloads": r["n_workloads"],
+                "batchBias": round(r["summary"]["Batch"]["bias"], 1),
+                "method1AnnualError": round(r["summary"]["Method 1"]["annual_abs"], 1),
+                "method2AnnualError": round(r["summary"]["Method 2"]["annual_abs"], 1),
+                "computeShare": round(r["shares_mean"]["Compute"]),
+                "peakHourShare": round(r["peak_share"]["mean"], 1),
+                "medianAnnualKg": round(r["annual_kg"]["median"]),
+                "medianMonthlyVisits": round(r["visits_month"]["median"], -3),
+                **coverage_quarter(r)}
     return weekly, methods, comps, cov, refs, headline, extras
+
+
+def coverage_quarter(r):
+    run = next(x for x in r["sensitivity"] if x["key"] == "telemetry_coverage")["runs"][0]
+    return {"quarterCoverageMethod2Mae": round(run["m2"], 1), "quarterCoverageRatio": round(run["ratio"], 1)}
 
 
 def extra_chart_data(r, s, week_start):
@@ -320,8 +335,6 @@ def main(unpacked: Path, fe: Path):
 // Generated from the manuscript (CarbonCut_Manuscript_filled.docx); keep in sync with the paper.
 import type {{ ResearchPaper }} from '@/types/research'
 
-import {{ researchHeadline as h }} from './nearRealTimeCarbonAccountingCharts'
-
 export const nearRealTimeCarbonAccountingPaper: ResearchPaper = {{
   slug: '{SLUG}',
   title:
@@ -338,20 +351,6 @@ export const nearRealTimeCarbonAccountingPaper: ResearchPaper = {{
   affiliations: [
     'Carbon Tech International Limited, London, United Kingdom',
     'Cambridge Judge Business School, University of Cambridge, Cambridge, United Kingdom',
-  ],
-  highlights: [
-    {{
-      value: `${{h.batchMae}}% → ${{h.method2Mae}}%`,
-      label: 'Hourly attribution error, conventional batch accounting vs. the hybrid method',
-    }},
-    {{
-      value: `${{h.errorRatio}}×`,
-      label: 'Lower error than annual batch accounting with full telemetry coverage',
-    }},
-    {{
-      value: `p = ${{h.m2VsM3P.toFixed(2)}}`,
-      label: 'Hybrid vs. fully deterministic method: no significant difference in error',
-    }},
   ],
   abstract: {ts(abstract)},
   keywords: {ts(keywords)},

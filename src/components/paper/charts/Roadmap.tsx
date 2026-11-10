@@ -83,7 +83,7 @@ function Chart() {
       <ol className="mt-4 grid gap-3 sm:grid-cols-4">
         {data.map((d, i) => (
           <li key={d.stage} className="rounded-lg border border-neutral-200 p-3 text-xs">
-            <p className="flex items-center gap-2 font-semibold text-[#080c04]">
+            <p className="flex items-center gap-2 font-semibold text-ink">
               <span
                 className="h-2.5 w-2.5 shrink-0 rounded-full"
                 style={{ backgroundColor: METHOD_COLORS[i] }}

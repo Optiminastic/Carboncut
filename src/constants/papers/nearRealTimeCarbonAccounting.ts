@@ -2,8 +2,6 @@
 // Generated from the manuscript (CarbonCut_Manuscript_filled.docx); keep in sync with the paper.
 import type { ResearchPaper } from '@/types/research'
 
-import { researchHeadline as h } from './nearRealTimeCarbonAccountingCharts'
-
 export const nearRealTimeCarbonAccountingPaper: ResearchPaper = {
   slug: 'near-real-time-carbon-accounting',
   title:
@@ -20,20 +18,6 @@ export const nearRealTimeCarbonAccountingPaper: ResearchPaper = {
   affiliations: [
     'Carbon Tech International Limited, London, United Kingdom',
     'Cambridge Judge Business School, University of Cambridge, Cambridge, United Kingdom',
-  ],
-  highlights: [
-    {
-      value: `${h.batchMae}% → ${h.method2Mae}%`,
-      label: 'Hourly attribution error, conventional batch accounting vs. the hybrid method',
-    },
-    {
-      value: `${h.errorRatio}×`,
-      label: 'Lower error than annual batch accounting with full telemetry coverage',
-    },
-    {
-      value: `p = ${h.m2VsM3P.toFixed(2)}`,
-      label: 'Hybrid vs. fully deterministic method: no significant difference in error',
-    },
   ],
   abstract:
     'Digital infrastructure and internet-based services contribute an estimated 3-4% of global CO₂e emissions, a share comparable to aviation and projected to grow. Current carbon accounting practices for internet data transmission rely on annualised, batch-based estimation methods, which lack temporal granularity, omit critical components of the transmission circuit, and introduce structural bias into emissions reporting. This paper proposes and evaluates three complementary attribution methodologies designed to overcome these limitations: (1) an operational hybrid resolution method for compliance-grade reporting; (2) a hybrid deterministic-batch method for improved accuracy under real-world telemetry constraints; and (3) a fully deterministic event-level framework representing the theoretical upper bound of attribution fidelity. Using synthetic hourly datasets for 200 workloads of a representative mid-size website, built with the emission factors of a production carbon accounting platform, we show that the hybrid deterministic-batch method reduces hourly attribution error from 35% under conventional batch accounting to 5%, statistically indistinguishable from the fully deterministic benchmark, and still by more than half when only a quarter of its deterministic components are covered by telemetry. The operational hybrid method ensures complete, auditable coverage of emission sources and removes most of the annual bias of batch accounting. Our findings indicate that near-real-time carbon accounting for internet data transmission is technically feasible, significantly more accurate than current practices, and essential for supporting evolving regulatory and operational decision-making.',

@@ -68,8 +68,6 @@ export interface ResearchPaper {
   pdfUrl: string
   authors: ResearchAuthor[]
   affiliations: string[]
-  /** Headline results shown as stat tiles in the page header. */
-  highlights: { value: string; label: string }[]
   abstract: string
   keywords: string[]
   sections: ResearchSection[]

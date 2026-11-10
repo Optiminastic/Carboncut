@@ -20,7 +20,7 @@ export const COMPONENT_COLORS: Record<string, string> = {
   Device: '#e87ba4',
 }
 
-export const INK = '#080c04'
+export const INK = '#15221c'
 export const GRID = '#e4e3df'
 export const AXIS = '#6b6a66'
 export const CHART_HEIGHT = 300

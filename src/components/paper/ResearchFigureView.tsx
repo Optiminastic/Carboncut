@@ -15,8 +15,8 @@ const ResearchChart = dynamic(() => import('./charts'), {
 
 function FigureCaption({ figure }: { figure: ResearchFigure }) {
   return (
-    <figcaption className="mt-4 text-sm leading-relaxed text-neutral-600">
-      <span className="font-semibold text-[#080c04]">Figure {figure.number}.</span> {figure.caption}
+    <figcaption className="text-sm leading-relaxed text-ink-soft">
+      <span className="font-semibold text-ink">Figure {figure.number}.</span> {figure.caption}
     </figcaption>
   )
 }
@@ -60,7 +60,7 @@ function StaticFigure({ figure }: { figure: ResearchFigure }) {
           <button
             type="button"
             onClick={() => dialogRef.current?.close()}
-            className="absolute right-3 top-3 rounded-md p-1.5 text-neutral-500 hover:bg-neutral-100 hover:text-[#080c04]"
+            className="absolute right-3 top-3 rounded-md p-1.5 text-neutral-500 hover:bg-neutral-100 hover:text-ink"
             aria-label="Close"
           >
             <X className="h-5 w-5" aria-hidden="true" />
@@ -82,31 +82,29 @@ function StaticFigure({ figure }: { figure: ResearchFigure }) {
 
 export default function ResearchFigureView({ figure }: { figure: ResearchFigure }) {
   return (
-    <figure
-      id={`figure-${figure.number}`}
-      className="my-10 scroll-mt-24 rounded-xl border border-neutral-200 bg-white p-4 sm:p-6"
-    >
-      {figure.interactive ? (
-        <>
-          <div className="mb-3 flex items-center justify-between gap-4">
-            <span className="rounded-full bg-[#b0ea1d]/25 px-2.5 py-0.5 text-xs font-semibold text-[#3d5208]">
-              Interactive
-            </span>
-            <a
-              href={figure.src}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-xs font-medium text-neutral-500 underline-offset-2 hover:text-[#080c04] hover:underline"
-            >
-              View figure as in paper
-            </a>
+    <figure id={`figure-${figure.number}`} className="my-12 scroll-mt-24">
+      <div className="rounded-xl bg-panel p-4 sm:p-6">
+        {figure.interactive ? (
+          <div className="rounded-lg bg-white p-3 sm:p-5">
+            <ResearchChart id={figure.interactive} />
           </div>
-          <ResearchChart id={figure.interactive} />
-        </>
-      ) : (
-        <StaticFigure figure={figure} />
-      )}
-      <FigureCaption figure={figure} />
+        ) : (
+          <StaticFigure figure={figure} />
+        )}
+      </div>
+      <div className="mt-3 flex flex-col gap-1 sm:flex-row sm:items-start sm:justify-between sm:gap-6">
+        <FigureCaption figure={figure} />
+        {figure.interactive && (
+          <a
+            href={figure.src}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="shrink-0 text-xs font-medium text-muted underline underline-offset-2 hover:text-ink"
+          >
+            Figure as printed
+          </a>
+        )}
+      </div>
     </figure>
   )
 }

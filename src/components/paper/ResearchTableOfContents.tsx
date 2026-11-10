@@ -49,17 +49,17 @@ function useActiveSection(ids: string[]) {
 
 function TocLinks({ items, active }: { items: TocItem[]; active?: string }) {
   return (
-    <ol className="space-y-1">
+    <ol className="space-y-0">
       {items.map((item) => (
         <li key={item.id}>
           <a
             href={`#${item.id}`}
             className={cn(
-              'block rounded-md border-l-2 py-1 pr-2 text-sm leading-snug transition-colors',
+              'block border-l-2 py-1 pr-2 text-sm leading-snug transition-colors',
               item.level === 1 ? 'pl-3 font-medium' : 'pl-6 text-[13px]',
               item.id === active
-                ? 'border-[#80b000] bg-[#b0ea1d]/15 text-[#080c04]'
-                : 'border-transparent text-neutral-500 hover:text-[#080c04]'
+                ? 'border-lime-deep text-ink'
+                : 'border-rule text-muted hover:text-ink'
             )}
             aria-current={item.id === active ? 'location' : undefined}
           >
@@ -74,6 +74,7 @@ function TocLinks({ items, active }: { items: TocItem[]; active?: string }) {
 export default function ResearchTableOfContents({ sections }: { sections: ResearchSection[] }) {
   const items = useMemo<TocItem[]>(
     () => [
+      { id: 'brief', label: 'The paper in brief', level: 1 },
       { id: 'abstract', label: 'Abstract', level: 1 },
       ...sections
         .filter((s) => s.level <= MAX_TOC_LEVEL)
@@ -88,9 +89,9 @@ export default function ResearchTableOfContents({ sections }: { sections: Resear
   return (
     <>
       {/* Mobile / tablet: collapsible list above the article */}
-      <details className="mb-8 rounded-xl border border-neutral-200 bg-white p-4 lg:hidden">
-        <summary className="cursor-pointer select-none text-sm font-semibold text-[#080c04]">
-          Contents
+      <details className="mb-4 rounded-xl bg-panel p-4 lg:hidden">
+        <summary className="cursor-pointer select-none text-sm font-semibold text-ink">
+          On this page
         </summary>
         <nav aria-label="Table of contents" className="mt-3">
           <TocLinks items={items} />
@@ -102,9 +103,7 @@ export default function ResearchTableOfContents({ sections }: { sections: Resear
         aria-label="Table of contents"
         className="sticky top-24 hidden max-h-[calc(100vh-7rem)] overflow-y-auto pb-8 lg:block"
       >
-        <p className="mb-3 pl-3 text-xs font-semibold uppercase tracking-wider text-neutral-400">
-          Contents
-        </p>
+        <p className="mb-3 text-sm font-semibold text-ink">On this page</p>
         <TocLinks items={items} active={active} />
       </nav>
     </>

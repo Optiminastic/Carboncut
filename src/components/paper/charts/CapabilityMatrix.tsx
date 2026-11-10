@@ -56,8 +56,8 @@ const ROWS: { method: string; cells: [string, 1 | 2 | 3][] }[] = [
   },
 ]
 const LEVEL_CLASS: Record<1 | 2 | 3, string> = {
-  1: 'bg-[#eaf2fc] text-[#080c04]',
-  2: 'bg-[#86b4ea] text-[#080c04]',
+  1: 'bg-[#eaf2fc] text-ink',
+  2: 'bg-[#86b4ea] text-ink',
   3: 'bg-[#2a78d6] text-white',
 }
 
@@ -83,7 +83,7 @@ function Chart() {
           <tbody>
             {ROWS.map((row) => (
               <tr key={row.method}>
-                <th scope="row" className="pr-2 text-left font-semibold text-[#080c04]">
+                <th scope="row" className="pr-2 text-left font-semibold text-ink">
                   {row.method}
                 </th>
                 {row.cells.map(([text, level], i) => (

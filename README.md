@@ -1,10 +1,12 @@
 # CarbonCut Research
 
-CarbonCut research papers, published as interactive web articles.
+A single-page site for the CarbonCut preprint *Towards Near-Real-Time Carbon Accounting for Internet Data Transmission*.
 
-Current paper:
+The page has three parts:
 
-- [Towards Near-Real-Time Carbon Accounting for Internet Data Transmission](src/constants/papers/nearRealTimeCarbonAccounting.ts) - served at `/papers/near-real-time-carbon-accounting` (preprint).
+- An interactive resolution ladder that shows the same week of emissions at four levels of detail.
+- "The paper in brief", a plain-language walkthrough of the problem, method, findings and limits.
+- The full paper with all 15 figures as interactive charts and a downloadable PDF.
 
 ## Stack
 
@@ -39,27 +41,24 @@ No other environment variables or backend services are needed.
 
 ```
 src/
-  app/                      routes: home, /papers/[slug], sitemap, robots
+  app/                      the page (/), sitemap, robots
   components/
-    SiteHeader.tsx, SiteFooter.tsx
-    paper/                  article layout, table of contents, figures, tables, charts
+    SiteHeader.tsx, SiteFooter.tsx, ReadingProgress.tsx
+    paper/                  hero ladder, brief, article layout, table of contents, figures, tables
+    paper/charts/           one module per interactive figure, plus a shared theme and registry
   constants/papers/
-    index.ts                registry of published papers
     nearRealTimeCarbonAccounting.ts        paper content (text, figures, tables, references)
-    nearRealTimeCarbonAccountingCharts.ts  data behind the interactive charts
+    nearRealTimeCarbonAccountingCharts.ts  data behind the interactive charts and headline numbers
+    nearRealTimeCarbonAccountingBrief.ts   plain-language summary and ladder copy
   types/research.ts         content types
 public/papers/<slug>/       figures (PNG) and the downloadable PDF
 analysis/                   simulation and figure code used to produce the paper's results
 ```
 
-## Adding a paper
+## Editing the summary
 
-1. Add a content module in `src/constants/papers/` that exports a `ResearchPaper`.
-2. Register it in `src/constants/papers/index.ts`.
-3. Put its figures and PDF in `public/papers/<slug>/`.
-
-The page, home-page listing and sitemap entry are generated from the registry.
-Interactive charts are paper-specific and live in `src/components/paper/ResearchCharts.tsx`.
+The plain-language summary lives in `src/constants/papers/nearRealTimeCarbonAccountingBrief.ts`.
+Its numbers are read from the generated chart data, so re-running the analysis updates them automatically.
 
 ## Reproducing the results
 

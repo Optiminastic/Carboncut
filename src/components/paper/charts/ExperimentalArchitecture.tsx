@@ -32,7 +32,7 @@ function Chart() {
           >
             <Box className="border-[#2a78d6] bg-[#eef4fc]">
               <p className="text-[10px] uppercase tracking-wide text-neutral-500">Users</p>
-              <p className="font-semibold text-[#080c04]">{m.name}</p>
+              <p className="font-semibold text-ink">{m.name}</p>
               <p className="text-neutral-600">{m.intensity} gCO₂/kWh</p>
             </Box>
             <ArrowRight className="h-4 w-4 text-neutral-400" aria-hidden="true" />
@@ -48,7 +48,7 @@ function Chart() {
           Hourly grid-intensity signal for all four markets
         </Box>
         <Box className="border-[#eb6834] bg-[#fdf0ea] py-4">
-          <p className="text-sm font-semibold text-[#080c04]">Origin cloud region</p>
+          <p className="text-sm font-semibold text-ink">Origin cloud region</p>
           <p className="text-neutral-600">London, UK grid</p>
           <ul className="mt-2 space-y-0.5 text-neutral-700">
             <li>Compute instances</li>

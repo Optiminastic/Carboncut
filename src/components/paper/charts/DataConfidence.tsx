@@ -29,7 +29,7 @@ function Chart() {
           <tbody>
             {dataConfidence.rows.map((row) => (
               <tr key={row.component}>
-                <th scope="row" className="pr-2 text-left text-xs font-semibold text-[#080c04]">
+                <th scope="row" className="pr-2 text-left text-xs font-semibold text-ink">
                   {row.component}
                 </th>
                 {row.values.map((v, i) => (
@@ -39,7 +39,7 @@ function Chart() {
                     className="rounded-md px-2 py-3 text-center text-xs font-medium tabular-nums"
                     style={{
                       backgroundColor: sequentialColor(v / SCALE_MAX),
-                      color: v > DARK_TEXT_THRESHOLD ? '#fff' : '#080c04',
+                      color: v > DARK_TEXT_THRESHOLD ? '#fff' : '#15221c',
                     }}
                   >
                     {cellText(v)}

@@ -7,6 +7,15 @@ export const researchHeadline = {
   errorRatio: 7.0,
   m2VsM3P: 0.3,
   workloads: 200,
+  batchBias: -32.6,
+  method1AnnualError: 0.9,
+  method2AnnualError: 0.6,
+  computeShare: 82,
+  peakHourShare: 14.4,
+  medianAnnualKg: 72,
+  medianMonthlyVisits: 49000.0,
+  quarterCoverageMethod2Mae: 14.8,
+  quarterCoverageRatio: 2.3,
 } as const
 
 /** One week of hourly emissions for the example workload, g CO2e per hour. */
@@ -17,6 +26,8 @@ export const weeklySeries = [
     reference: 4.8,
     batch: 2.97,
     method1: 5.33,
+    method2: 5.25,
+    method3: 5.04,
   },
   {
     hour: 1,
@@ -24,6 +35,8 @@ export const weeklySeries = [
     reference: 4.83,
     batch: 2.97,
     method1: 5.35,
+    method2: 4.55,
+    method3: 4.25,
   },
   {
     hour: 2,
@@ -31,6 +44,8 @@ export const weeklySeries = [
     reference: 5.05,
     batch: 2.97,
     method1: 5.39,
+    method2: 5.27,
+    method3: 5.32,
   },
   {
     hour: 3,
@@ -38,6 +53,8 @@ export const weeklySeries = [
     reference: 4.4,
     batch: 2.97,
     method1: 5.38,
+    method2: 4.95,
+    method3: 4.6,
   },
   {
     hour: 4,
@@ -45,6 +62,8 @@ export const weeklySeries = [
     reference: 4.54,
     batch: 2.97,
     method1: 5.38,
+    method2: 4.76,
+    method3: 4.1,
   },
   {
     hour: 5,
@@ -52,6 +71,8 @@ export const weeklySeries = [
     reference: 4.75,
     batch: 2.97,
     method1: 5.42,
+    method2: 4.82,
+    method3: 4.83,
   },
   {
     hour: 6,
@@ -59,6 +80,8 @@ export const weeklySeries = [
     reference: 4.85,
     batch: 2.97,
     method1: 5.42,
+    method2: 5.36,
+    method3: 5.0,
   },
   {
     hour: 7,
@@ -66,6 +89,8 @@ export const weeklySeries = [
     reference: 4.82,
     batch: 2.97,
     method1: 5.38,
+    method2: 5.25,
+    method3: 4.83,
   },
   {
     hour: 8,
@@ -73,6 +98,8 @@ export const weeklySeries = [
     reference: 5.7,
     batch: 2.97,
     method1: 5.47,
+    method2: 5.74,
+    method3: 5.56,
   },
   {
     hour: 9,
@@ -80,6 +107,8 @@ export const weeklySeries = [
     reference: 6.2,
     batch: 2.97,
     method1: 5.43,
+    method2: 5.8,
+    method3: 5.91,
   },
   {
     hour: 10,
@@ -87,6 +116,8 @@ export const weeklySeries = [
     reference: 5.73,
     batch: 2.97,
     method1: 5.4,
+    method2: 5.69,
+    method3: 5.06,
   },
   {
     hour: 11,
@@ -94,6 +125,8 @@ export const weeklySeries = [
     reference: 6.06,
     batch: 2.97,
     method1: 5.46,
+    method2: 5.78,
+    method3: 6.24,
   },
   {
     hour: 12,
@@ -101,6 +134,8 @@ export const weeklySeries = [
     reference: 5.76,
     batch: 2.97,
     method1: 5.41,
+    method2: 5.97,
+    method3: 6.1,
   },
   {
     hour: 13,
@@ -108,6 +143,8 @@ export const weeklySeries = [
     reference: 5.22,
     batch: 2.97,
     method1: 5.37,
+    method2: 5.63,
+    method3: 5.74,
   },
   {
     hour: 14,
@@ -115,6 +152,8 @@ export const weeklySeries = [
     reference: 5.59,
     batch: 2.97,
     method1: 5.4,
+    method2: 5.62,
+    method3: 5.66,
   },
   {
     hour: 15,
@@ -122,6 +161,8 @@ export const weeklySeries = [
     reference: 6.8,
     batch: 2.97,
     method1: 5.53,
+    method2: 6.93,
+    method3: 7.39,
   },
   {
     hour: 16,
@@ -129,6 +170,8 @@ export const weeklySeries = [
     reference: 7.66,
     batch: 2.97,
     method1: 5.56,
+    method2: 7.25,
+    method3: 7.1,
   },
   {
     hour: 17,
@@ -136,6 +179,8 @@ export const weeklySeries = [
     reference: 8.04,
     batch: 2.97,
     method1: 5.51,
+    method2: 7.26,
+    method3: 8.46,
   },
   {
     hour: 18,
@@ -143,6 +188,8 @@ export const weeklySeries = [
     reference: 7.29,
     batch: 2.97,
     method1: 5.43,
+    method2: 7.12,
+    method3: 7.23,
   },
   {
     hour: 19,
@@ -150,6 +197,8 @@ export const weeklySeries = [
     reference: 7.49,
     batch: 2.97,
     method1: 5.44,
+    method2: 7.18,
+    method3: 7.54,
   },
   {
     hour: 20,
@@ -157,6 +206,8 @@ export const weeklySeries = [
     reference: 6.88,
     batch: 2.97,
     method1: 5.43,
+    method2: 6.95,
+    method3: 6.81,
   },
   {
     hour: 21,
@@ -164,6 +215,8 @@ export const weeklySeries = [
     reference: 7.18,
     batch: 2.97,
     method1: 5.45,
+    method2: 7.16,
+    method3: 7.39,
   },
   {
     hour: 22,
@@ -171,6 +224,8 @@ export const weeklySeries = [
     reference: 5.92,
     batch: 2.97,
     method1: 5.38,
+    method2: 6.07,
+    method3: 6.38,
   },
   {
     hour: 23,
@@ -178,6 +233,8 @@ export const weeklySeries = [
     reference: 5.67,
     batch: 2.97,
     method1: 5.33,
+    method2: 5.9,
+    method3: 5.75,
   },
   {
     hour: 24,
@@ -185,6 +242,8 @@ export const weeklySeries = [
     reference: 5.32,
     batch: 2.97,
     method1: 5.31,
+    method2: 5.2,
+    method3: 5.07,
   },
   {
     hour: 25,
@@ -192,6 +251,8 @@ export const weeklySeries = [
     reference: 5.7,
     batch: 2.97,
     method1: 5.37,
+    method2: 5.8,
+    method3: 5.23,
   },
   {
     hour: 26,
@@ -199,6 +260,8 @@ export const weeklySeries = [
     reference: 5.42,
     batch: 2.97,
     method1: 5.36,
+    method2: 6.06,
+    method3: 5.48,
   },
   {
     hour: 27,
@@ -206,6 +269,8 @@ export const weeklySeries = [
     reference: 5.12,
     batch: 2.97,
     method1: 5.36,
+    method2: 5.53,
+    method3: 4.62,
   },
   {
     hour: 28,
@@ -213,6 +278,8 @@ export const weeklySeries = [
     reference: 5.46,
     batch: 2.97,
     method1: 5.41,
+    method2: 5.56,
+    method3: 5.22,
   },
   {
     hour: 29,
@@ -220,6 +287,8 @@ export const weeklySeries = [
     reference: 5.43,
     batch: 2.97,
     method1: 5.38,
+    method2: 5.66,
+    method3: 5.53,
   },
   {
     hour: 30,
@@ -227,6 +296,8 @@ export const weeklySeries = [
     reference: 5.68,
     batch: 2.97,
     method1: 5.4,
+    method2: 6.08,
+    method3: 6.3,
   },
   {
     hour: 31,
@@ -234,6 +305,8 @@ export const weeklySeries = [
     reference: 6.79,
     batch: 2.97,
     method1: 5.49,
+    method2: 6.55,
+    method3: 6.33,
   },
   {
     hour: 32,
@@ -241,6 +314,8 @@ export const weeklySeries = [
     reference: 6.19,
     batch: 2.97,
     method1: 5.45,
+    method2: 6.18,
+    method3: 6.35,
   },
   {
     hour: 33,
@@ -248,6 +323,8 @@ export const weeklySeries = [
     reference: 6.05,
     batch: 2.97,
     method1: 5.43,
+    method2: 6.66,
+    method3: 5.85,
   },
   {
     hour: 34,
@@ -255,6 +332,8 @@ export const weeklySeries = [
     reference: 6.6,
     batch: 2.97,
     method1: 5.45,
+    method2: 6.86,
+    method3: 6.27,
   },
   {
     hour: 35,
@@ -262,6 +341,8 @@ export const weeklySeries = [
     reference: 6.52,
     batch: 2.97,
     method1: 5.46,
+    method2: 6.9,
+    method3: 6.52,
   },
   {
     hour: 36,
@@ -269,6 +350,8 @@ export const weeklySeries = [
     reference: 5.76,
     batch: 2.97,
     method1: 5.43,
+    method2: 6.34,
+    method3: 6.64,
   },
   {
     hour: 37,
@@ -276,6 +359,8 @@ export const weeklySeries = [
     reference: 6.07,
     batch: 2.97,
     method1: 5.43,
+    method2: 6.26,
+    method3: 6.18,
   },
   {
     hour: 38,
@@ -283,6 +368,8 @@ export const weeklySeries = [
     reference: 6.59,
     batch: 2.97,
     method1: 5.44,
+    method2: 6.17,
+    method3: 6.05,
   },
   {
     hour: 39,
@@ -290,6 +377,8 @@ export const weeklySeries = [
     reference: 7.31,
     batch: 2.97,
     method1: 5.51,
+    method2: 7.42,
+    method3: 7.39,
   },
   {
     hour: 40,
@@ -297,6 +386,8 @@ export const weeklySeries = [
     reference: 7.37,
     batch: 2.97,
     method1: 5.5,
+    method2: 6.98,
+    method3: 7.22,
   },
   {
     hour: 41,
@@ -304,6 +395,8 @@ export const weeklySeries = [
     reference: 8.21,
     batch: 2.97,
     method1: 5.51,
+    method2: 7.86,
+    method3: 8.35,
   },
   {
     hour: 42,
@@ -311,6 +404,8 @@ export const weeklySeries = [
     reference: 8.03,
     batch: 2.97,
     method1: 5.46,
+    method2: 7.43,
+    method3: 7.71,
   },
   {
     hour: 43,
@@ -318,6 +413,8 @@ export const weeklySeries = [
     reference: 7.65,
     batch: 2.97,
     method1: 5.46,
+    method2: 7.13,
+    method3: 7.57,
   },
   {
     hour: 44,
@@ -325,6 +422,8 @@ export const weeklySeries = [
     reference: 7.51,
     batch: 2.97,
     method1: 5.46,
+    method2: 7.52,
+    method3: 7.29,
   },
   {
     hour: 45,
@@ -332,6 +431,8 @@ export const weeklySeries = [
     reference: 7.04,
     batch: 2.97,
     method1: 5.49,
+    method2: 6.57,
+    method3: 6.2,
   },
   {
     hour: 46,
@@ -339,6 +440,8 @@ export const weeklySeries = [
     reference: 5.84,
     batch: 2.97,
     method1: 5.4,
+    method2: 5.84,
+    method3: 5.85,
   },
   {
     hour: 47,
@@ -346,6 +449,8 @@ export const weeklySeries = [
     reference: 5.22,
     batch: 2.97,
     method1: 5.34,
+    method2: 5.47,
+    method3: 5.08,
   },
   {
     hour: 48,
@@ -353,6 +458,8 @@ export const weeklySeries = [
     reference: 4.81,
     batch: 2.97,
     method1: 5.35,
+    method2: 4.61,
+    method3: 4.58,
   },
   {
     hour: 49,
@@ -360,6 +467,8 @@ export const weeklySeries = [
     reference: 4.55,
     batch: 2.97,
     method1: 5.33,
+    method2: 5.01,
+    method3: 4.46,
   },
   {
     hour: 50,
@@ -367,6 +476,8 @@ export const weeklySeries = [
     reference: 4.54,
     batch: 2.97,
     method1: 5.37,
+    method2: 4.74,
+    method3: 4.94,
   },
   {
     hour: 51,
@@ -374,6 +485,8 @@ export const weeklySeries = [
     reference: 4.54,
     batch: 2.97,
     method1: 5.43,
+    method2: 4.35,
+    method3: 4.07,
   },
   {
     hour: 52,
@@ -381,6 +494,8 @@ export const weeklySeries = [
     reference: 4.02,
     batch: 2.97,
     method1: 5.35,
+    method2: 4.48,
+    method3: 4.34,
   },
   {
     hour: 53,
@@ -388,6 +503,8 @@ export const weeklySeries = [
     reference: 4.2,
     batch: 2.97,
     method1: 5.38,
+    method2: 4.43,
+    method3: 4.02,
   },
   {
     hour: 54,
@@ -395,6 +512,8 @@ export const weeklySeries = [
     reference: 4.93,
     batch: 2.97,
     method1: 5.39,
+    method2: 5.33,
+    method3: 5.1,
   },
   {
     hour: 55,
@@ -402,6 +521,8 @@ export const weeklySeries = [
     reference: 5.45,
     batch: 2.97,
     method1: 5.43,
+    method2: 5.98,
+    method3: 5.51,
   },
   {
     hour: 56,
@@ -409,6 +530,8 @@ export const weeklySeries = [
     reference: 5.28,
     batch: 2.97,
     method1: 5.37,
+    method2: 5.54,
+    method3: 5.56,
   },
   {
     hour: 57,
@@ -416,6 +539,8 @@ export const weeklySeries = [
     reference: 5.76,
     batch: 2.97,
     method1: 5.45,
+    method2: 5.75,
+    method3: 5.34,
   },
   {
     hour: 58,
@@ -423,6 +548,8 @@ export const weeklySeries = [
     reference: 6.41,
     batch: 2.97,
     method1: 5.49,
+    method2: 6.4,
+    method3: 6.04,
   },
   {
     hour: 59,
@@ -430,6 +557,8 @@ export const weeklySeries = [
     reference: 6.19,
     batch: 2.97,
     method1: 5.45,
+    method2: 5.97,
+    method3: 5.93,
   },
   {
     hour: 60,
@@ -437,6 +566,8 @@ export const weeklySeries = [
     reference: 5.6,
     batch: 2.97,
     method1: 5.38,
+    method2: 5.57,
+    method3: 5.71,
   },
   {
     hour: 61,
@@ -444,6 +575,8 @@ export const weeklySeries = [
     reference: 5.8,
     batch: 2.97,
     method1: 5.43,
+    method2: 5.8,
+    method3: 5.44,
   },
   {
     hour: 62,
@@ -451,6 +584,8 @@ export const weeklySeries = [
     reference: 6.21,
     batch: 2.97,
     method1: 5.48,
+    method2: 6.46,
+    method3: 7.22,
   },
   {
     hour: 63,
@@ -458,6 +593,8 @@ export const weeklySeries = [
     reference: 6.55,
     batch: 2.97,
     method1: 5.48,
+    method2: 6.55,
+    method3: 7.44,
   },
   {
     hour: 64,
@@ -465,6 +602,8 @@ export const weeklySeries = [
     reference: 6.6,
     batch: 2.97,
     method1: 5.47,
+    method2: 5.8,
+    method3: 6.17,
   },
   {
     hour: 65,
@@ -472,6 +611,8 @@ export const weeklySeries = [
     reference: 7.07,
     batch: 2.97,
     method1: 5.52,
+    method2: 7.35,
+    method3: 7.61,
   },
   {
     hour: 66,
@@ -479,6 +620,8 @@ export const weeklySeries = [
     reference: 7.35,
     batch: 2.97,
     method1: 5.51,
+    method2: 7.54,
+    method3: 7.28,
   },
   {
     hour: 67,
@@ -486,6 +629,8 @@ export const weeklySeries = [
     reference: 6.17,
     batch: 2.97,
     method1: 5.45,
+    method2: 6.6,
+    method3: 6.02,
   },
   {
     hour: 68,
@@ -493,6 +638,8 @@ export const weeklySeries = [
     reference: 5.54,
     batch: 2.97,
     method1: 5.39,
+    method2: 5.79,
+    method3: 5.76,
   },
   {
     hour: 69,
@@ -500,6 +647,8 @@ export const weeklySeries = [
     reference: 5.89,
     batch: 2.97,
     method1: 5.5,
+    method2: 5.76,
+    method3: 6.37,
   },
   {
     hour: 70,
@@ -507,6 +656,8 @@ export const weeklySeries = [
     reference: 5.23,
     batch: 2.97,
     method1: 5.46,
+    method2: 5.56,
+    method3: 5.55,
   },
   {
     hour: 71,
@@ -514,6 +665,8 @@ export const weeklySeries = [
     reference: 4.5,
     batch: 2.97,
     method1: 5.36,
+    method2: 4.77,
+    method3: 4.48,
   },
   {
     hour: 72,
@@ -521,6 +674,8 @@ export const weeklySeries = [
     reference: 4.4,
     batch: 2.97,
     method1: 5.33,
+    method2: 4.52,
+    method3: 4.12,
   },
   {
     hour: 73,
@@ -528,6 +683,8 @@ export const weeklySeries = [
     reference: 5.15,
     batch: 2.97,
     method1: 5.4,
+    method2: 5.6,
+    method3: 5.39,
   },
   {
     hour: 74,
@@ -535,6 +692,8 @@ export const weeklySeries = [
     reference: 4.8,
     batch: 2.97,
     method1: 5.38,
+    method2: 4.94,
+    method3: 4.46,
   },
   {
     hour: 75,
@@ -542,6 +701,8 @@ export const weeklySeries = [
     reference: 4.38,
     batch: 2.97,
     method1: 5.34,
+    method2: 5.05,
+    method3: 4.47,
   },
   {
     hour: 76,
@@ -549,6 +710,8 @@ export const weeklySeries = [
     reference: 4.3,
     batch: 2.97,
     method1: 5.35,
+    method2: 4.61,
+    method3: 4.13,
   },
   {
     hour: 77,
@@ -556,6 +719,8 @@ export const weeklySeries = [
     reference: 5.04,
     batch: 2.97,
     method1: 5.45,
+    method2: 5.67,
+    method3: 4.98,
   },
   {
     hour: 78,
@@ -563,6 +728,8 @@ export const weeklySeries = [
     reference: 5.47,
     batch: 2.97,
     method1: 5.37,
+    method2: 5.57,
+    method3: 5.4,
   },
   {
     hour: 79,
@@ -570,6 +737,8 @@ export const weeklySeries = [
     reference: 5.96,
     batch: 2.97,
     method1: 5.39,
+    method2: 6.2,
+    method3: 6.25,
   },
   {
     hour: 80,
@@ -577,6 +746,8 @@ export const weeklySeries = [
     reference: 6.52,
     batch: 2.97,
     method1: 5.44,
+    method2: 6.52,
+    method3: 6.84,
   },
   {
     hour: 81,
@@ -584,6 +755,8 @@ export const weeklySeries = [
     reference: 6.98,
     batch: 2.97,
     method1: 5.51,
+    method2: 8.08,
+    method3: 8.01,
   },
   {
     hour: 82,
@@ -591,6 +764,8 @@ export const weeklySeries = [
     reference: 6.36,
     batch: 2.97,
     method1: 5.45,
+    method2: 6.41,
+    method3: 6.77,
   },
   {
     hour: 83,
@@ -598,6 +773,8 @@ export const weeklySeries = [
     reference: 7.12,
     batch: 2.97,
     method1: 5.48,
+    method2: 7.36,
+    method3: 7.62,
   },
   {
     hour: 84,
@@ -605,6 +782,8 @@ export const weeklySeries = [
     reference: 5.94,
     batch: 2.97,
     method1: 5.4,
+    method2: 6.28,
+    method3: 5.96,
   },
   {
     hour: 85,
@@ -612,6 +791,8 @@ export const weeklySeries = [
     reference: 6.51,
     batch: 2.97,
     method1: 5.43,
+    method2: 6.22,
+    method3: 6.44,
   },
   {
     hour: 86,
@@ -619,6 +800,8 @@ export const weeklySeries = [
     reference: 7.05,
     batch: 2.97,
     method1: 5.46,
+    method2: 6.87,
+    method3: 7.23,
   },
   {
     hour: 87,
@@ -626,6 +809,8 @@ export const weeklySeries = [
     reference: 7.7,
     batch: 2.97,
     method1: 5.5,
+    method2: 7.51,
+    method3: 8.2,
   },
   {
     hour: 88,
@@ -633,6 +818,8 @@ export const weeklySeries = [
     reference: 8.65,
     batch: 2.97,
     method1: 5.53,
+    method2: 8.6,
+    method3: 9.02,
   },
   {
     hour: 89,
@@ -640,6 +827,8 @@ export const weeklySeries = [
     reference: 8.02,
     batch: 2.97,
     method1: 5.46,
+    method2: 7.66,
+    method3: 8.35,
   },
   {
     hour: 90,
@@ -647,6 +836,8 @@ export const weeklySeries = [
     reference: 7.57,
     batch: 2.97,
     method1: 5.44,
+    method2: 7.33,
+    method3: 7.4,
   },
   {
     hour: 91,
@@ -654,6 +845,8 @@ export const weeklySeries = [
     reference: 7.72,
     batch: 2.97,
     method1: 5.4,
+    method2: 7.21,
+    method3: 7.73,
   },
   {
     hour: 92,
@@ -661,6 +854,8 @@ export const weeklySeries = [
     reference: 8.33,
     batch: 2.97,
     method1: 5.51,
+    method2: 7.9,
+    method3: 8.44,
   },
   {
     hour: 93,
@@ -668,6 +863,8 @@ export const weeklySeries = [
     reference: 6.77,
     batch: 2.97,
     method1: 5.41,
+    method2: 6.44,
+    method3: 6.75,
   },
   {
     hour: 94,
@@ -675,6 +872,8 @@ export const weeklySeries = [
     reference: 6.12,
     batch: 2.97,
     method1: 5.36,
+    method2: 5.68,
+    method3: 5.57,
   },
   {
     hour: 95,
@@ -682,6 +881,8 @@ export const weeklySeries = [
     reference: 6.22,
     batch: 2.97,
     method1: 5.37,
+    method2: 6.14,
+    method3: 6.03,
   },
   {
     hour: 96,
@@ -689,6 +890,8 @@ export const weeklySeries = [
     reference: 6.01,
     batch: 2.97,
     method1: 5.38,
+    method2: 6.12,
+    method3: 5.87,
   },
   {
     hour: 97,
@@ -696,6 +899,8 @@ export const weeklySeries = [
     reference: 5.27,
     batch: 2.97,
     method1: 5.34,
+    method2: 5.31,
+    method3: 4.89,
   },
   {
     hour: 98,
@@ -703,6 +908,8 @@ export const weeklySeries = [
     reference: 5.64,
     batch: 2.97,
     method1: 5.39,
+    method2: 5.73,
+    method3: 5.93,
   },
   {
     hour: 99,
@@ -710,6 +917,8 @@ export const weeklySeries = [
     reference: 5.51,
     batch: 2.97,
     method1: 5.39,
+    method2: 5.72,
+    method3: 5.35,
   },
   {
     hour: 100,
@@ -717,6 +926,8 @@ export const weeklySeries = [
     reference: 5.05,
     batch: 2.97,
     method1: 5.36,
+    method2: 5.35,
+    method3: 5.03,
   },
   {
     hour: 101,
@@ -724,6 +935,8 @@ export const weeklySeries = [
     reference: 5.18,
     batch: 2.97,
     method1: 5.44,
+    method2: 5.3,
+    method3: 5.01,
   },
   {
     hour: 102,
@@ -731,6 +944,8 @@ export const weeklySeries = [
     reference: 5.63,
     batch: 2.97,
     method1: 5.44,
+    method2: 5.52,
+    method3: 5.4,
   },
   {
     hour: 103,
@@ -738,6 +953,8 @@ export const weeklySeries = [
     reference: 5.42,
     batch: 2.97,
     method1: 5.44,
+    method2: 5.63,
+    method3: 5.69,
   },
   {
     hour: 104,
@@ -745,6 +962,8 @@ export const weeklySeries = [
     reference: 5.87,
     batch: 2.97,
     method1: 5.45,
+    method2: 6.45,
+    method3: 6.68,
   },
   {
     hour: 105,
@@ -752,6 +971,8 @@ export const weeklySeries = [
     reference: 5.87,
     batch: 2.97,
     method1: 5.49,
+    method2: 5.99,
+    method3: 5.42,
   },
   {
     hour: 106,
@@ -759,6 +980,8 @@ export const weeklySeries = [
     reference: 6.09,
     batch: 2.97,
     method1: 5.46,
+    method2: 6.18,
+    method3: 5.93,
   },
   {
     hour: 107,
@@ -766,6 +989,8 @@ export const weeklySeries = [
     reference: 5.49,
     batch: 2.97,
     method1: 5.4,
+    method2: 5.54,
+    method3: 5.83,
   },
   {
     hour: 108,
@@ -773,6 +998,8 @@ export const weeklySeries = [
     reference: 5.68,
     batch: 2.97,
     method1: 5.45,
+    method2: 5.54,
+    method3: 5.35,
   },
   {
     hour: 109,
@@ -780,6 +1007,8 @@ export const weeklySeries = [
     reference: 5.78,
     batch: 2.97,
     method1: 5.43,
+    method2: 5.44,
+    method3: 5.19,
   },
   {
     hour: 110,
@@ -787,6 +1016,8 @@ export const weeklySeries = [
     reference: 6.1,
     batch: 2.97,
     method1: 5.44,
+    method2: 6.01,
+    method3: 6.01,
   },
   {
     hour: 111,
@@ -794,6 +1025,8 @@ export const weeklySeries = [
     reference: 5.84,
     batch: 2.97,
     method1: 5.44,
+    method2: 6.12,
+    method3: 5.76,
   },
   {
     hour: 112,
@@ -801,6 +1034,8 @@ export const weeklySeries = [
     reference: 6.74,
     batch: 2.97,
     method1: 5.5,
+    method2: 6.49,
+    method3: 6.5,
   },
   {
     hour: 113,
@@ -808,6 +1043,8 @@ export const weeklySeries = [
     reference: 6.9,
     batch: 2.97,
     method1: 5.47,
+    method2: 6.94,
+    method3: 7.4,
   },
   {
     hour: 114,
@@ -815,6 +1052,8 @@ export const weeklySeries = [
     reference: 7.6,
     batch: 2.97,
     method1: 5.48,
+    method2: 7.36,
+    method3: 6.63,
   },
   {
     hour: 115,
@@ -822,6 +1061,8 @@ export const weeklySeries = [
     reference: 6.99,
     batch: 2.97,
     method1: 5.46,
+    method2: 6.88,
+    method3: 7.38,
   },
   {
     hour: 116,
@@ -829,6 +1070,8 @@ export const weeklySeries = [
     reference: 6.56,
     batch: 2.97,
     method1: 5.47,
+    method2: 6.64,
+    method3: 7.44,
   },
   {
     hour: 117,
@@ -836,6 +1079,8 @@ export const weeklySeries = [
     reference: 6.34,
     batch: 2.97,
     method1: 5.46,
+    method2: 6.26,
+    method3: 6.71,
   },
   {
     hour: 118,
@@ -843,6 +1088,8 @@ export const weeklySeries = [
     reference: 5.71,
     batch: 2.97,
     method1: 5.42,
+    method2: 5.74,
+    method3: 5.8,
   },
   {
     hour: 119,
@@ -850,6 +1097,8 @@ export const weeklySeries = [
     reference: 5.22,
     batch: 2.97,
     method1: 5.33,
+    method2: 5.57,
+    method3: 5.35,
   },
   {
     hour: 120,
@@ -857,6 +1106,8 @@ export const weeklySeries = [
     reference: 4.46,
     batch: 2.97,
     method1: 5.29,
+    method2: 4.52,
+    method3: 4.27,
   },
   {
     hour: 121,
@@ -864,6 +1115,8 @@ export const weeklySeries = [
     reference: 4.29,
     batch: 2.97,
     method1: 5.3,
+    method2: 4.33,
+    method3: 3.88,
   },
   {
     hour: 122,
@@ -871,6 +1124,8 @@ export const weeklySeries = [
     reference: 3.81,
     batch: 2.97,
     method1: 5.31,
+    method2: 3.98,
+    method3: 3.88,
   },
   {
     hour: 123,
@@ -878,6 +1133,8 @@ export const weeklySeries = [
     reference: 4.35,
     batch: 2.97,
     method1: 5.32,
+    method2: 4.67,
+    method3: 4.79,
   },
   {
     hour: 124,
@@ -885,6 +1142,8 @@ export const weeklySeries = [
     reference: 4.05,
     batch: 2.97,
     method1: 5.31,
+    method2: 4.28,
+    method3: 3.89,
   },
   {
     hour: 125,
@@ -892,6 +1151,8 @@ export const weeklySeries = [
     reference: 4.12,
     batch: 2.97,
     method1: 5.36,
+    method2: 4.78,
+    method3: 4.39,
   },
   {
     hour: 126,
@@ -899,6 +1160,8 @@ export const weeklySeries = [
     reference: 4.08,
     batch: 2.97,
     method1: 5.32,
+    method2: 4.13,
+    method3: 4.22,
   },
   {
     hour: 127,
@@ -906,6 +1169,8 @@ export const weeklySeries = [
     reference: 3.68,
     batch: 2.97,
     method1: 5.33,
+    method2: 3.72,
+    method3: 3.51,
   },
   {
     hour: 128,
@@ -913,6 +1178,8 @@ export const weeklySeries = [
     reference: 4.15,
     batch: 2.97,
     method1: 5.36,
+    method2: 4.63,
+    method3: 4.5,
   },
   {
     hour: 129,
@@ -920,6 +1187,8 @@ export const weeklySeries = [
     reference: 4.28,
     batch: 2.97,
     method1: 5.34,
+    method2: 4.22,
+    method3: 3.9,
   },
   {
     hour: 130,
@@ -927,6 +1196,8 @@ export const weeklySeries = [
     reference: 4.27,
     batch: 2.97,
     method1: 5.4,
+    method2: 4.7,
+    method3: 4.39,
   },
   {
     hour: 131,
@@ -934,6 +1205,8 @@ export const weeklySeries = [
     reference: 4.17,
     batch: 2.97,
     method1: 5.34,
+    method2: 4.06,
+    method3: 4.0,
   },
   {
     hour: 132,
@@ -941,6 +1214,8 @@ export const weeklySeries = [
     reference: 4.58,
     batch: 2.97,
     method1: 5.38,
+    method2: 4.6,
+    method3: 4.31,
   },
   {
     hour: 133,
@@ -948,6 +1223,8 @@ export const weeklySeries = [
     reference: 4.26,
     batch: 2.97,
     method1: 5.31,
+    method2: 4.18,
+    method3: 3.84,
   },
   {
     hour: 134,
@@ -955,6 +1232,8 @@ export const weeklySeries = [
     reference: 4.88,
     batch: 2.97,
     method1: 5.38,
+    method2: 4.74,
+    method3: 5.04,
   },
   {
     hour: 135,
@@ -962,6 +1241,8 @@ export const weeklySeries = [
     reference: 5.04,
     batch: 2.97,
     method1: 5.39,
+    method2: 5.04,
+    method3: 4.76,
   },
   {
     hour: 136,
@@ -969,6 +1250,8 @@ export const weeklySeries = [
     reference: 5.98,
     batch: 2.97,
     method1: 5.41,
+    method2: 5.66,
+    method3: 5.88,
   },
   {
     hour: 137,
@@ -976,6 +1259,8 @@ export const weeklySeries = [
     reference: 6.08,
     batch: 2.97,
     method1: 5.39,
+    method2: 6.04,
+    method3: 6.14,
   },
   {
     hour: 138,
@@ -983,6 +1268,8 @@ export const weeklySeries = [
     reference: 6.05,
     batch: 2.97,
     method1: 5.34,
+    method2: 5.41,
+    method3: 5.71,
   },
   {
     hour: 139,
@@ -990,6 +1277,8 @@ export const weeklySeries = [
     reference: 5.93,
     batch: 2.97,
     method1: 5.34,
+    method2: 6.19,
+    method3: 6.31,
   },
   {
     hour: 140,
@@ -997,6 +1286,8 @@ export const weeklySeries = [
     reference: 5.57,
     batch: 2.97,
     method1: 5.34,
+    method2: 4.95,
+    method3: 5.09,
   },
   {
     hour: 141,
@@ -1004,6 +1295,8 @@ export const weeklySeries = [
     reference: 5.74,
     batch: 2.97,
     method1: 5.38,
+    method2: 5.53,
+    method3: 5.87,
   },
   {
     hour: 142,
@@ -1011,6 +1304,8 @@ export const weeklySeries = [
     reference: 5.78,
     batch: 2.97,
     method1: 5.34,
+    method2: 5.0,
+    method3: 5.08,
   },
   {
     hour: 143,
@@ -1018,6 +1313,8 @@ export const weeklySeries = [
     reference: 5.19,
     batch: 2.97,
     method1: 5.31,
+    method2: 4.9,
+    method3: 5.39,
   },
   {
     hour: 144,
@@ -1025,6 +1322,8 @@ export const weeklySeries = [
     reference: 5.24,
     batch: 2.97,
     method1: 5.31,
+    method2: 5.09,
+    method3: 5.15,
   },
   {
     hour: 145,
@@ -1032,6 +1331,8 @@ export const weeklySeries = [
     reference: 5.35,
     batch: 2.97,
     method1: 5.32,
+    method2: 5.51,
+    method3: 5.24,
   },
   {
     hour: 146,
@@ -1039,6 +1340,8 @@ export const weeklySeries = [
     reference: 5.97,
     batch: 2.97,
     method1: 5.36,
+    method2: 6.08,
+    method3: 6.66,
   },
   {
     hour: 147,
@@ -1046,6 +1349,8 @@ export const weeklySeries = [
     reference: 5.19,
     batch: 2.97,
     method1: 5.29,
+    method2: 5.15,
+    method3: 4.87,
   },
   {
     hour: 148,
@@ -1053,6 +1358,8 @@ export const weeklySeries = [
     reference: 5.81,
     batch: 2.97,
     method1: 5.35,
+    method2: 5.78,
+    method3: 5.28,
   },
   {
     hour: 149,
@@ -1060,6 +1367,8 @@ export const weeklySeries = [
     reference: 5.44,
     batch: 2.97,
     method1: 5.33,
+    method2: 4.86,
+    method3: 5.03,
   },
   {
     hour: 150,
@@ -1067,6 +1376,8 @@ export const weeklySeries = [
     reference: 5.52,
     batch: 2.97,
     method1: 5.3,
+    method2: 5.74,
+    method3: 5.34,
   },
   {
     hour: 151,
@@ -1074,6 +1385,8 @@ export const weeklySeries = [
     reference: 5.75,
     batch: 2.97,
     method1: 5.33,
+    method2: 5.89,
+    method3: 5.68,
   },
   {
     hour: 152,
@@ -1081,6 +1394,8 @@ export const weeklySeries = [
     reference: 5.92,
     batch: 2.97,
     method1: 5.36,
+    method2: 5.77,
+    method3: 6.02,
   },
   {
     hour: 153,
@@ -1088,6 +1403,8 @@ export const weeklySeries = [
     reference: 5.94,
     batch: 2.97,
     method1: 5.35,
+    method2: 6.65,
+    method3: 6.54,
   },
   {
     hour: 154,
@@ -1095,6 +1412,8 @@ export const weeklySeries = [
     reference: 6.02,
     batch: 2.97,
     method1: 5.39,
+    method2: 5.51,
+    method3: 5.4,
   },
   {
     hour: 155,
@@ -1102,6 +1421,8 @@ export const weeklySeries = [
     reference: 5.65,
     batch: 2.97,
     method1: 5.42,
+    method2: 6.12,
+    method3: 6.04,
   },
   {
     hour: 156,
@@ -1109,6 +1430,8 @@ export const weeklySeries = [
     reference: 4.97,
     batch: 2.97,
     method1: 5.35,
+    method2: 5.31,
+    method3: 4.97,
   },
   {
     hour: 157,
@@ -1116,6 +1439,8 @@ export const weeklySeries = [
     reference: 4.97,
     batch: 2.97,
     method1: 5.36,
+    method2: 4.95,
+    method3: 4.54,
   },
   {
     hour: 158,
@@ -1123,6 +1448,8 @@ export const weeklySeries = [
     reference: 5.11,
     batch: 2.97,
     method1: 5.34,
+    method2: 4.83,
+    method3: 4.79,
   },
   {
     hour: 159,
@@ -1130,6 +1457,8 @@ export const weeklySeries = [
     reference: 5.71,
     batch: 2.97,
     method1: 5.34,
+    method2: 6.54,
+    method3: 5.61,
   },
   {
     hour: 160,
@@ -1137,6 +1466,8 @@ export const weeklySeries = [
     reference: 6.7,
     batch: 2.97,
     method1: 5.43,
+    method2: 5.97,
+    method3: 7.33,
   },
   {
     hour: 161,
@@ -1144,6 +1475,8 @@ export const weeklySeries = [
     reference: 6.82,
     batch: 2.97,
     method1: 5.39,
+    method2: 6.34,
+    method3: 6.61,
   },
   {
     hour: 162,
@@ -1151,6 +1484,8 @@ export const weeklySeries = [
     reference: 7.24,
     batch: 2.97,
     method1: 5.4,
+    method2: 6.98,
+    method3: 7.3,
   },
   {
     hour: 163,
@@ -1158,6 +1493,8 @@ export const weeklySeries = [
     reference: 6.85,
     batch: 2.97,
     method1: 5.39,
+    method2: 6.76,
+    method3: 7.12,
   },
   {
     hour: 164,
@@ -1165,6 +1502,8 @@ export const weeklySeries = [
     reference: 5.53,
     batch: 2.97,
     method1: 5.36,
+    method2: 5.13,
+    method3: 4.91,
   },
   {
     hour: 165,
@@ -1172,6 +1511,8 @@ export const weeklySeries = [
     reference: 5.05,
     batch: 2.97,
     method1: 5.34,
+    method2: 5.26,
+    method3: 5.1,
   },
   {
     hour: 166,
@@ -1179,6 +1520,8 @@ export const weeklySeries = [
     reference: 5.05,
     batch: 2.97,
     method1: 5.34,
+    method2: 4.8,
+    method3: 4.82,
   },
   {
     hour: 167,
@@ -1186,6 +1529,8 @@ export const weeklySeries = [
     reference: 4.8,
     batch: 2.97,
     method1: 5.33,
+    method2: 4.88,
+    method3: 4.61,
   },
 ]
 
