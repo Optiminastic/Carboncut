@@ -3,6 +3,7 @@ import React from 'react'
 import { brief } from '@/constants/papers/nearRealTimeCarbonAccountingBrief'
 import type { ResearchBlock, ResearchPaper, ResearchSection } from '@/types/research'
 
+import FigureGallery from './FigureGallery'
 import PaperBrief from './PaperBrief'
 import ResearchFigureView from './ResearchFigureView'
 import ResearchTableOfContents from './ResearchTableOfContents'
@@ -114,7 +115,22 @@ function Hero({ paper }: { paper: ResearchPaper }) {
         </ol>
       </div>
 
-      <div className="mt-12">
+      <div className="mt-8 flex flex-wrap gap-3">
+        <a
+          href="#full-paper"
+          className="inline-flex rounded-full bg-ink px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-ink-soft"
+        >
+          Read the full paper
+        </a>
+        <a
+          href="#figures"
+          className="inline-flex rounded-full border border-ink/20 px-5 py-2.5 text-sm font-medium text-ink transition-colors hover:border-ink"
+        >
+          See all {paper.figures.length} figures
+        </a>
+      </div>
+
+      <div className="mt-14">
         <h2 className="font-serif text-2xl font-medium tracking-tight text-ink">
           The resolution ladder
         </h2>
@@ -132,6 +148,7 @@ export default function ResearchPaperPage({ paper }: { paper: ResearchPaper }) {
     <div className="bg-white">
       <Hero paper={paper} />
       <PaperBrief />
+      <FigureGallery figures={paper.figures} />
 
       <div
         id="full-paper"

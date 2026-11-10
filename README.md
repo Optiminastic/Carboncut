@@ -1,6 +1,6 @@
 # CarbonCut Research
 
-A single-page site for the CarbonCut preprint *Towards Near-Real-Time Carbon Accounting for Internet Data Transmission*.
+A single-page site for the CarbonCut preprint _Towards Near-Real-Time Carbon Accounting for Internet Data Transmission_.
 
 The page has three parts:
 

@@ -3,6 +3,12 @@ import { ArrowDownToLine } from 'lucide-react'
 
 import ReadingProgress from './ReadingProgress'
 
+const SECTION_LINKS = [
+  { label: 'In brief', href: '#brief' },
+  { label: 'Figures', href: '#figures' },
+  { label: 'Full paper', href: '#full-paper' },
+]
+
 export default function SiteHeader({ pdfUrl }: { pdfUrl: string }) {
   return (
     <header className="sticky top-0 z-40 border-b border-rule bg-white/90 backdrop-blur">
@@ -13,6 +19,17 @@ export default function SiteHeader({ pdfUrl }: { pdfUrl: string }) {
             CarbonCut <span className="font-normal text-muted">Research</span>
           </span>
         </a>
+        <nav aria-label="Sections" className="hidden items-center gap-7 md:flex">
+          {SECTION_LINKS.map((link) => (
+            <a
+              key={link.href}
+              href={link.href}
+              className="text-sm text-ink-soft transition-colors hover:text-ink"
+            >
+              {link.label}
+            </a>
+          ))}
+        </nav>
         <a
           href={pdfUrl}
           download

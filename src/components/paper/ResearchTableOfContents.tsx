@@ -75,6 +75,7 @@ export default function ResearchTableOfContents({ sections }: { sections: Resear
   const items = useMemo<TocItem[]>(
     () => [
       { id: 'brief', label: 'The paper in brief', level: 1 },
+      { id: 'figures', label: 'All figures', level: 1 },
       { id: 'abstract', label: 'Abstract', level: 1 },
       ...sections
         .filter((s) => s.level <= MAX_TOC_LEVEL)
