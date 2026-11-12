@@ -14,6 +14,7 @@ import numpy as np
 from PIL import Image
 
 HERE = Path(__file__).parent
+TITLE = "Challenging the Legacy Internet Carbon Accounting"
 SLUG = "near-real-time-carbon-accounting"
 
 # heading text in the docx -> (number, id)
@@ -361,9 +362,8 @@ import type {{ ResearchPaper }} from '@/types/research'
 
 export const nearRealTimeCarbonAccountingPaper: ResearchPaper = {{
   slug: '{SLUG}',
-  title:
-    'Towards Near-Real-Time Carbon Accounting for Internet Data Transmission: A Resolution-Based Attribution Framework',
-  shortTitle: 'Near-Real-Time Carbon Accounting for Internet Data Transmission',
+  title: '{TITLE}',
+  shortTitle: '{TITLE}',
   status: 'Preprint',
   statusNote: 'This is a preprint. It has not yet been peer reviewed.',
   publishedDate: '2026-11-09',

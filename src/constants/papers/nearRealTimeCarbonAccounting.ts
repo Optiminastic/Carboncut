@@ -4,9 +4,8 @@ import type { ResearchPaper } from '@/types/research'
 
 export const nearRealTimeCarbonAccountingPaper: ResearchPaper = {
   slug: 'near-real-time-carbon-accounting',
-  title:
-    'Towards Near-Real-Time Carbon Accounting for Internet Data Transmission: A Resolution-Based Attribution Framework',
-  shortTitle: 'Near-Real-Time Carbon Accounting for Internet Data Transmission',
+  title: 'Challenging the Legacy Internet Carbon Accounting',
+  shortTitle: 'Challenging the Legacy Internet Carbon Accounting',
   status: 'Preprint',
   statusNote: 'This is a preprint. It has not yet been peer reviewed.',
   publishedDate: '2026-11-09',
@@ -517,7 +516,7 @@ export const nearRealTimeCarbonAccountingPaper: ResearchPaper = {
       number: 5,
       src: '/papers/near-real-time-carbon-accounting/fig05.png',
       width: 1856,
-      height: 894,
+      height: 994,
       caption: 'Methodological capabilities of existing and proposed approaches.',
       interactive: 'capability-matrix',
     },

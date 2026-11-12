@@ -184,6 +184,10 @@ SETUP_PARAS = [
 ]
 
 REPLACE = {
+    # ---- title
+    "Towards Near-Real-Time Carbon Accounting for Internet Data Transmission":
+        "Challenging the Legacy Internet Carbon Accounting",
+
     # ---- abstract
     "Using synthetic datasets designed to reflect the architecture":
         "Digital infrastructure and internet-based services contribute an estimated 2-4% of global CO₂e emissions, a share "
