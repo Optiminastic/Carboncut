@@ -9,7 +9,7 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
-from matplotlib.patches import FancyArrowPatch, FancyBboxPatch
+from matplotlib.patches import FancyArrowPatch, FancyBboxPatch, Patch
 
 HERE = Path(__file__).parent
 OUT = HERE / "figures"
@@ -159,13 +159,15 @@ def fig05():
         ["Event-level", "Full", "Hourly,\npath-level", "Medium", "Low", "Full"],
     ]
     score = np.array([[1, 1, 1, 2, 3, 3], [2, 3, 2, 3, 3, 3], [3, 3, 3, 2, 2, 2], [3, 3, 3, 2, 1, 1]])
-    cmap = matplotlib.colors.ListedColormap(["#d6e6f8", "#86b4ea", "#2a78d6"])
+    # Least favourable (1) red, moderate (2) yellow, most favourable (3) blue.
+    level_colors = ["#c8372d", "#f2c230", "#2a78d6"]
+    cmap = matplotlib.colors.ListedColormap(level_colors)
     fig, ax = plt.subplots(figsize=(WIDTH, 3.0))
     ax.imshow(score, cmap=cmap, vmin=0.5, vmax=3.5, aspect="auto")
     for i in range(4):
         for j in range(len(crit)):
             ax.text(j, i, labels[i][j], ha="center", va="center", fontsize=7,
-                    color="white" if score[i, j] == 3 else INK)
+                    color=INK if score[i, j] == 2 else "white")
     ax.set_xticks(range(len(crit)))
     ax.set_xticklabels(crit, fontsize=7.5)
     ax.set_yticks(range(4))
@@ -179,7 +181,11 @@ def fig05():
     ax.grid(which="minor", color="white", linewidth=2)
     ax.tick_params(which="minor", length=0)
     ax.xaxis.tick_top()
-    ax.set_title("Methodological capabilities (darker = more favourable)", loc="left", pad=34)
+    ax.set_title("Methodological capabilities", loc="left", pad=34)
+    legend = [Patch(color=c, label=l) for c, l in
+              zip(level_colors, ["Least favourable", "Moderate", "Most favourable"])]
+    ax.legend(handles=legend, loc="upper center", bbox_to_anchor=(0.5, -0.04), ncol=3,
+              frameon=False, fontsize=7.5)
     save(fig, 5)
 
 

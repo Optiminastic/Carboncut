@@ -55,9 +55,10 @@ const ROWS: { method: string; cells: [string, 1 | 2 | 3][] }[] = [
     ],
   },
 ]
+// Least favourable red, moderate yellow, most favourable blue (matches the static figure).
 const LEVEL_CLASS: Record<1 | 2 | 3, string> = {
-  1: 'bg-[#eaf2fc] text-ink',
-  2: 'bg-[#86b4ea] text-ink',
+  1: 'bg-[#c8372d] text-white',
+  2: 'bg-[#f2c230] text-ink',
   3: 'bg-[#2a78d6] text-white',
 }
 
@@ -103,7 +104,7 @@ function Chart() {
         {([1, 2, 3] as const).map((l) => (
           <span key={l} className="inline-flex items-center gap-1.5">
             <span className={`h-3 w-3 rounded ${LEVEL_CLASS[l]}`} />
-            {l === 1 ? 'Less favourable' : l === 2 ? 'Moderate' : 'More favourable'}
+            {l === 1 ? 'Least favourable' : l === 2 ? 'Moderate' : 'Most favourable'}
           </span>
         ))}
       </div>
