@@ -55,7 +55,7 @@ export const brief = {
   ladderIntro:
     'The paper compares four ways of attributing emissions, each one step finer than the last. Choose a step to see how closely it tracks the true hourly emissions of a typical website.',
   method: [
-    `The approaches were tested on ${h.workloads} simulated mid-size websites, each modelled hour by hour for a full year. No real website was measured. A typical simulated site has about ${h.medianMonthlyVisits.toLocaleString('en-GB')} visits a month, users in the UK, US, India and Germany, and servers in a London cloud region. Emission factors come from the CarbonCut platform's calculators.`,
+    `The approaches were tested on a simulated mid-size SaaS platform: ${h.workloads} workloads, each modelled hour by hour for a full year. A typical workload has about ${h.medianMonthlyVisits.toLocaleString('en-GB')} visits a month, users in the UK, US, India and Germany, and servers in a London cloud region. Emission factors come from the CarbonCut platform's calculators.`,
     'Each approach was scored against a more detailed reference model of the same websites. To keep the test fair, the reference works differently from every method, and every method starts with realistic calibration errors (for example in server power and emission factors) that do not cancel out over a year.',
   ],
   findings: [

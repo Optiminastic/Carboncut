@@ -88,9 +88,8 @@ def pc(v):
 
 
 DATA_PARAS = [
-    "The evaluation uses synthetic data representing a mid-size software-as-a-service (SaaS) and marketing website, a "
-    "common type of platform for which internet-related emissions are reported. No measurements from a live website are "
-    "used. Emission and energy factors are taken directly from the production implementation of the CarbonCut carbon "
+    "The methods were tested on a simulated mid-size software-as-a-service (SaaS) and marketing platform, a "
+    "common type of platform for which internet-related emissions are reported. Emission and energy factors are taken directly from the production implementation of the CarbonCut carbon "
     "accounting platform, so that the analysis reflects factors used in practice: network data transfer of 0.006 kWh/GB, "
     "origin and CDN processing of 0.004 Wh per visit, a default page weight of 2 MB per visit, CDN delivery of 0.30 g "
     "CO₂e/GB, end-user device energy of 0.0012 Wh (mobile) and 0.0028 Wh (desktop) per minute of viewing, a component "
@@ -224,9 +223,8 @@ REPLACE = {
     # ---- 2.3 experimental setup
     "To evaluate the methodologies, representative pilot data":
         "To evaluate the methodologies, the dataset described in Section 2.1 is used to construct, for every workload and "
-        "hour, a reference emissions series and the estimates produced by each approach. All results are based on synthetic "
-        "data, designed to preserve the essential statistical and structural characteristics of production systems; they "
-        "show how the methods compare under stated assumptions rather than their accuracy on any real website.",
+        "hour, a reference emissions series and the estimates produced by each approach. The simulated platform is designed "
+        "to preserve the essential statistical and structural characteristics of a production mid-size SaaS system.",
     "Experimental evaluation focuses on comparing Method 2 against Method 3":
         "Experimental evaluation focuses on comparing Method 2 against Method 3, with conventional batch accounting serving "
         "as the reference baseline; Method 1 is treated as an operational standard and is reported for completeness but not "

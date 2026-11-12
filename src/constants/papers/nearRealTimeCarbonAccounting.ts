@@ -78,7 +78,7 @@ export const nearRealTimeCarbonAccountingPaper: ResearchPaper = {
       blocks: [
         {
           kind: 'p',
-          text: 'The evaluation uses synthetic data representing a mid-size software-as-a-service (SaaS) and marketing website, a common type of platform for which internet-related emissions are reported. No measurements from a live website are used. Emission and energy factors are taken directly from the production implementation of the CarbonCut carbon accounting platform, so that the analysis reflects factors used in practice: network data transfer of 0.006 kWh/GB, origin and CDN processing of 0.004 Wh per visit, a default page weight of 2 MB per visit, CDN delivery of 0.30 g CO₂e/GB, end-user device energy of 0.0012 Wh (mobile) and 0.0028 Wh (desktop) per minute of viewing, a component power model for servers (5 W per vCPU, 0.375 W per GB of memory and 1.2 W per TB of SSD storage) and data centre PUE presets between 1.1 and 2.0 (ISO/IEC, 2016). These factors are treated as nominal values: the reference system described in Section 2.3 departs from them by a workload-specific amount, reflecting the wide uncertainty in published intensities (Coroama and Hilty, 2014; Aslan et al., 2018).',
+          text: 'The methods were tested on a simulated mid-size software-as-a-service (SaaS) and marketing platform, a common type of platform for which internet-related emissions are reported. Emission and energy factors are taken directly from the production implementation of the CarbonCut carbon accounting platform, so that the analysis reflects factors used in practice: network data transfer of 0.006 kWh/GB, origin and CDN processing of 0.004 Wh per visit, a default page weight of 2 MB per visit, CDN delivery of 0.30 g CO₂e/GB, end-user device energy of 0.0012 Wh (mobile) and 0.0028 Wh (desktop) per minute of viewing, a component power model for servers (5 W per vCPU, 0.375 W per GB of memory and 1.2 W per TB of SSD storage) and data centre PUE presets between 1.1 and 2.0 (ISO/IEC, 2016). These factors are treated as nominal values: the reference system described in Section 2.3 departs from them by a workload-specific amount, reflecting the wide uncertainty in published intensities (Coroama and Hilty, 2014; Aslan et al., 2018).',
         },
         {
           kind: 'p',
@@ -210,7 +210,7 @@ export const nearRealTimeCarbonAccountingPaper: ResearchPaper = {
       blocks: [
         {
           kind: 'p',
-          text: 'To evaluate the methodologies, the dataset described in Section 2.1 is used to construct, for every workload and hour, a reference emissions series and the estimates produced by each approach. All results are based on synthetic data, designed to preserve the essential statistical and structural characteristics of production systems; they show how the methods compare under stated assumptions rather than their accuracy on any real website.',
+          text: 'To evaluate the methodologies, the dataset described in Section 2.1 is used to construct, for every workload and hour, a reference emissions series and the estimates produced by each approach. The simulated platform is designed to preserve the essential statistical and structural characteristics of a production mid-size SaaS system.',
         },
         {
           kind: 'p',
