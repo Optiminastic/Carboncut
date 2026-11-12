@@ -72,6 +72,18 @@ python3 -m venv .venv && .venv/bin/pip install -r requirements.txt
 .venv/bin/python figs.py     # writes figures/fig01.png ... fig15.png
 ```
 
+### Evaluation design
+
+The simulation is built so that it cannot simply confirm the proposed methods:
+
+- The reference system differs from every estimator in structure (idle power floor, routing mix, seasonal PUE and true energy intensities vary per workload).
+- Estimators carry per-workload systematic calibration errors as well as hourly noise, so annual totals are not artificially exact.
+- Every workload has its own grid-intensity year, so workloads are independent.
+- An annualised control (Method 2's annual totals spread evenly) separates the effect of timing from boundary and factor choices.
+- Annual-total error is reported next to hourly WAPE, because WAPE penalises any flat series.
+- Method 2 vs Method 3 is checked with an equivalence test (±1 percentage point), not inferred from a non-significant p-value.
+- Sensitivity runs include the size of the systematic errors (0.5x to 2x) and share a baseline run on the same workloads.
+
 To refresh the website from a new version of the manuscript:
 
 1. Unzip the `.docx` into a folder.

@@ -2,16 +2,33 @@ import { dataConfidence } from '@/constants/papers/nearRealTimeCarbonAccountingC
 
 import { sequentialColor, type ChartModule } from './theme'
 
-const SCALE_MAX = 16
-const DARK_TEXT_THRESHOLD = 10
+// Colour encodes the systematic (per-workload) uncertainty, which does not average out over a year.
+const SCALE_MAX = 30
+const DARK_TEXT_THRESHOLD = 18
+const ROUTING_SIGNAL_INDEX = 2
 
-const cellText = (v: number) => (v === 0 ? 'known' : `±${v}%`)
+type Cell = { systematic: number; hourly: number } | null
+
+function cellText(v: Cell, isRouting: boolean) {
+  if (!v) return 'known'
+  if (isRouting) return `±${v.systematic} pts mix`
+  if (v.systematic === 0) return `±${v.hourly}% hourly`
+  if (v.hourly === 0) return `±${v.systematic}% fixed`
+  return `±${v.systematic}% / ±${v.hourly}%`
+}
+
+function cellTitle(component: string, signal: string, v: Cell, isRouting: boolean) {
+  if (!v) return `${component}, ${signal}: known exactly`
+  if (isRouting)
+    return `${component}, ${signal}: routing mix uncertain by ±${v.systematic} percentage points`
+  return `${component}, ${signal}: systematic ±${v.systematic}%, hourly ±${v.hourly}% (1σ)`
+}
 
 function Chart() {
   return (
     <div>
       <div className="overflow-x-auto">
-        <table className="w-full min-w-[520px] border-separate border-spacing-1 text-sm">
+        <table className="w-full min-w-[560px] border-separate border-spacing-1 text-sm">
           <thead>
             <tr>
               <th className="w-24" />
@@ -32,25 +49,30 @@ function Chart() {
                 <th scope="row" className="pr-2 text-left text-xs font-semibold text-ink">
                   {row.component}
                 </th>
-                {row.values.map((v, i) => (
-                  <td
-                    key={dataConfidence.signals[i]}
-                    title={`${row.component}, ${dataConfidence.signals[i]}: ${v === 0 ? 'known exactly' : `±${v}% (1σ)`}`}
-                    className="rounded-md px-2 py-3 text-center text-xs font-medium tabular-nums"
-                    style={{
-                      backgroundColor: sequentialColor(v / SCALE_MAX),
-                      color: v > DARK_TEXT_THRESHOLD ? '#fff' : '#15221c',
-                    }}
-                  >
-                    {cellText(v)}
-                  </td>
-                ))}
+                {row.values.map((v: Cell, i) => {
+                  const signal = dataConfidence.signals[i]
+                  const isRouting = i === ROUTING_SIGNAL_INDEX
+                  const systematic = v?.systematic ?? 0
+                  return (
+                    <td
+                      key={signal}
+                      title={cellTitle(row.component, signal, v, isRouting)}
+                      className="rounded-md px-2 py-3 text-center text-xs font-medium tabular-nums"
+                      style={{
+                        backgroundColor: sequentialColor(systematic / SCALE_MAX),
+                        color: systematic > DARK_TEXT_THRESHOLD ? '#fff' : '#15221c',
+                      }}
+                    >
+                      {cellText(v, isRouting)}
+                    </td>
+                  )
+                })}
               </tr>
             ))}
           </tbody>
         </table>
       </div>
-      <div className="mt-4 flex items-center gap-3 text-xs tabular-nums text-neutral-600">
+      <div className="mt-4 flex flex-wrap items-center gap-3 text-xs tabular-nums text-neutral-600">
         <span>Known</span>
         <span
           className="h-2.5 w-40 rounded"
@@ -58,7 +80,7 @@ function Chart() {
             background: `linear-gradient(to right, ${sequentialColor(0)}, ${sequentialColor(1)})`,
           }}
         />
-        <span>±{SCALE_MAX}% assumed hourly uncertainty (1σ)</span>
+        <span>±{SCALE_MAX}% systematic uncertainty (1σ). Cells read systematic / hourly.</span>
       </div>
     </div>
   )

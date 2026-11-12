@@ -26,6 +26,7 @@ M_LABEL = {"Batch": "Conventional batch", "Method 1": "Method 1: Operational hyb
            "Method 2": "Method 2: Hybrid deterministic-batch", "Method 3": "Method 3: Full event-level"}
 M_SHORT = {"Batch": "Batch", "Method 1": "Method 1", "Method 2": "Method 2", "Method 3": "Method 3"}
 M_COLOR = dict(zip(METHODS, SLOTS[:4]))
+CONTROL = "Annualised Method 2"
 COMPONENTS = R["components"]
 C_COLOR = dict(zip(COMPONENTS, SLOTS[:5]))
 SUM = R["summary"]
@@ -93,7 +94,7 @@ def fig02():
     ax.set_xlim(0, 7 * 24)
     ax.set_ylabel("Emissions (g CO$_2$e per hour)")
     ax.set_title("One week of attributed emissions, example workload", loc="left")
-    ax.legend(loc="upper right", ncol=1, fontsize=7.5)
+    ax.legend(loc="upper center", bbox_to_anchor=(0.5, -0.12), ncol=3, fontsize=7.5)
     ax.set_ylim(0, None)
     save(fig, 2)
 
@@ -184,20 +185,24 @@ def fig05():
 
 # ------------------------------------------------------------------ Figure 6
 def fig06():
-    data = [S[f"mae_{m.replace(' ', '_')}"] for m in METHODS]
-    fig, ax = plt.subplots(figsize=(WIDTH, 3.0))
+    keys = METHODS + [CONTROL]
+    data = [S[f"mae_{m.replace(' ', '_')}"] for m in keys]
+    colors = [M_COLOR[m] for m in METHODS] + [MUTED]
+    fig, ax = plt.subplots(figsize=(WIDTH, 3.2))
     rng = np.random.default_rng(1)
-    for i, (m, d) in enumerate(zip(METHODS, data)):
-        ax.scatter(i + rng.uniform(-0.18, 0.18, d.size), d, s=8, color=M_COLOR[m], alpha=0.55, lw=0)
+    for i, (m, d) in enumerate(zip(keys, data)):
+        ax.scatter(i + rng.uniform(-0.18, 0.18, d.size), d, s=8, color=colors[i], alpha=0.55, lw=0)
         ax.boxplot(d, positions=[i], widths=0.5, showfliers=False,
                    medianprops=dict(color=INK, lw=1.5), boxprops=dict(color=INK2),
                    whiskerprops=dict(color=INK2), capprops=dict(color=INK2))
         ax.text(i, d.max() + 1.5, f"{d.mean():.1f}%", ha="center", color=INK, fontweight="bold")
-    ax.set_xticks(range(4))
-    ax.set_xticklabels(["Conventional\nbatch", "Method 1\nOperational\nhybrid", "Method 2\nHybrid det.-\nbatch", "Method 3\nFull\nevent-level"], fontsize=7.5)
+    ax.axvline(3.5, color=GRID, lw=1)
+    ax.set_xticks(range(len(keys)))
+    ax.set_xticklabels(["Conventional\nbatch", "Method 1\nOperational\nhybrid", "Method 2\nHybrid det.-\nbatch",
+                        "Method 3\nFull\nevent-level", "Control:\nMethod 2\nannualised"], fontsize=7.5)
     ax.set_ylabel("Hourly attribution error, WAPE (%)")
     ax.set_ylim(0, max(d.max() for d in data) + 6)
-    ax.set_title("Attribution error across 200 synthetic workloads (label = mean)", loc="left")
+    ax.set_title(f"Attribution error across {R['n_workloads']} synthetic workloads (label = mean)", loc="left")
     ax.grid(axis="x", visible=False)
     save(fig, 6)
 
@@ -381,8 +386,9 @@ def fig13():
     x = np.array([c["coverage"] for c in cov]) * 100
     m2 = np.array([c["mae_m2"] for c in cov])
     fig, ax = plt.subplots(figsize=(WIDTH, 2.9))
+    ref_key = {"Batch": "mae_batch", "Method 1": "mae_m1", "Method 3": "mae_m3"}
     for m in ["Batch", "Method 1", "Method 3"]:
-        v = SUM[m]["mae"]
+        v = float(np.mean([c[ref_key[m]] for c in cov]))
         ax.axhline(v, color=M_COLOR[m], lw=1.2, ls="--")
         ax.text(101, v, f"{M_SHORT[m]} ({v:.1f}%)", va="center", fontsize=7.5, color=INK2)
     ax.plot(x, m2, color=M_COLOR["Method 2"], marker="o", ms=4, lw=2, label="Method 2")
@@ -396,33 +402,61 @@ def fig13():
 
 
 # ------------------------------------------------------------------ Figure 14
+def confidence_matrix():
+    """Assumed uncertainty of the best available signal (Method 3), as (systematic, hourly) sigma in %.
+
+    Systematic = per-workload error that persists all year; hourly = independent noise.
+    None marks a quantity that is known exactly.
+    """
+    n, cal, dev = R["noise"], R["calibration"], R["truth_deviation"]
+    pc = lambda v: round(v * 100)
+    return [
+        ("Compute", [(0, pc(n["util"])), (pc(cal["power_model"]), pc(n["util"])), None,
+                     (pc(cal["grid_bias"]), pc(n["ci_signal"]))]),
+        ("Storage", [(0, pc(n["storage_meter"])), (pc(cal["storage_telemetry"]), pc(n["storage_meter"])), None,
+                     (pc(cal["grid_bias"]), pc(n["ci_signal"]))]),
+        ("Network", [(0, pc(n["bytes"])), (pc(cal["route_model"]), pc(n["route_energy"])),
+                     (pc(cal["path_weight_abs"]), 0), (pc(cal["grid_bias"]), pc(n["ci_signal"]))]),
+        ("CDN", [(0, pc(n["cdn_logs"])), (pc(dev["cdn"]), 0), None, (pc(cal["grid_bias"]), pc(n["ci_signal"]))]),
+        ("Device", [(0, pc(n["bytes"])), (pc(cal["device_telemetry"]), pc(n["device_class"])), None,
+                    (pc(cal["grid_bias"]), pc(n["ci_signal"]))]),
+    ]
+
+
+def cell_label(v, routing=False):
+    if v is None:
+        return "known"
+    sys_err, hourly = v
+    if routing:
+        return f"±{sys_err} pts mix"
+    if sys_err == 0:
+        return f"±{hourly}% hourly"
+    if hourly == 0:
+        return f"±{sys_err}% fixed"
+    return f"±{sys_err}% / ±{hourly}%"
+
+
 def fig14():
-    n = R["noise"]
     signals = ["Activity volume", "Energy model", "Routing / location", "Grid intensity"]
-    sig = np.array([  # assumed relative uncertainty (sigma) per hourly observation; nan = not observed
-        [n["util"], n["util"], 0.0, n["ci_signal"]],                       # Compute
-        [n["storage_meter"], n["storage_meter"], 0.0, n["ci_signal"]],     # Storage
-        [n["bytes"], n["route_energy"], n["route_energy"], n["ci_signal"]],  # Network
-        [n["cdn_logs"], n["cdn_logs"], n["bytes"], n["ci_signal"]],        # CDN
-        [n["bytes"], n["device_class"], n["bytes"], n["ci_signal"]],       # Device
-    ]) * 100
+    rows = confidence_matrix()
+    sysv = np.array([[0 if v is None else v[0] for v in vals] for _, vals in rows], dtype=float)
     fig, ax = plt.subplots(figsize=(WIDTH, 2.9))
-    im = ax.imshow(sig, cmap="Blues", vmin=0, vmax=16, aspect="auto")
-    for i in range(sig.shape[0]):
-        for j in range(sig.shape[1]):
-            v = sig[i, j]
-            txt = "known" if v == 0 else f"±{v:.0f}%"
-            ax.text(j, i, txt, ha="center", va="center", fontsize=7.5, color="white" if v > 10 else INK)
+    im = ax.imshow(sysv, cmap="Blues", vmin=0, vmax=30, aspect="auto")
+    for i, (_, vals) in enumerate(rows):
+        for j, v in enumerate(vals):
+            txt = cell_label(v, routing=j == 2)
+            ax.text(j, i, txt, ha="center", va="center", fontsize=7.2,
+                    color="white" if sysv[i, j] > 18 else INK)
     ax.set_xticks(range(len(signals)))
     ax.set_xticklabels(signals)
-    ax.set_yticks(range(len(COMPONENTS)))
-    ax.set_yticklabels(COMPONENTS)
+    ax.set_yticks(range(len(rows)))
+    ax.set_yticklabels([c for c, _ in rows])
     ax.grid(False)
     ax.tick_params(length=0)
     cb = fig.colorbar(im, ax=ax, pad=0.015)
-    cb.set_label("Assumed hourly uncertainty (1σ, %)", color=INK2)
+    cb.set_label("Systematic uncertainty (1σ, %)", color=INK2)
     cb.outline.set_visible(False)
-    ax.set_title("Data confidence by component and signal type (lighter = more confident)", loc="left")
+    ax.set_title("Data confidence by component and signal (systematic / hourly, 1σ)", loc="left")
     save(fig, 14)
 
 

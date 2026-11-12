@@ -52,14 +52,14 @@ FIGURE_AFTER = {
     2: "Annualised batch methods tend to smooth",
     8: "At system level, Method 2 extends",
     11: "Experimental evaluation focuses on comparing",
-    14: "The four approaches observe this system",
+    14: "Each estimator carries two kinds of error",
     6: "Method 1, which combines event",
     9: "Beyond aggregate MAE, the analysis examines",
     10: "All three proposed methods capture temporal",
     12: "Temporal responsiveness is evaluated",
     13: "To move beyond aggregate error values",
     7: "decomposes the error reduction achieved",
-    15: "The final stage full event",
+    15: "The final stage, full event",
 }
 TABLE_AFTER = {"table-1": "To move beyond aggregate error values", "table-2": "Because the results are derived"}
 INTERACTIVE = {
@@ -77,12 +77,13 @@ INTERACTIVE_CAPTION = {
        "(annual) and Method 1 (monthly totals plus event-level web traffic). Batch methods smooth emissions over time, "
        "masking both load-driven and grid-intensity-driven variability.",
     6: "Hourly attribution error (WAPE) across 200 synthetic workloads. Bars show the mean; whiskers show the "
-       "5th-95th percentile range.",
-    9: "Component-level hourly error under conventional batch accounting and Method 2. The largest accuracy gains "
-       "arise from deterministic treatment of compute and CDN components.",
+       "5th-95th percentile range. The grey control spreads Method 2's annual totals evenly over the year, so the gap "
+       "between it and Method 2 is the effect of temporal resolution alone. Hover for the annual-total error.",
+    9: "Component-level hourly error under conventional batch accounting and Method 2. Storage and CDN improve most in "
+       "relative terms; compute, at over 80% of emissions, contributes most of the aggregate gain.",
     13: "Hourly attribution error of Method 2 as telemetry coverage of its deterministic components increases, against "
-        "the other approaches. The hybrid approach captures most achievable accuracy gains under current telemetry "
-        "constraints.",
+        "the other approaches on the same workloads. Beyond about 80% coverage the remaining error is set by "
+        "calibration, not coverage.",
 }
 CAPTION_WEB = {
     3: "Structural omissions introduced by conventional subsystem-focused accounting.",
@@ -241,16 +242,25 @@ def chart_data():
     for key, name in [("Batch", "Conventional batch"), ("Method 1", "Method 1"), ("Method 2", "Method 2"),
                       ("Method 3", "Method 3")]:
         m = r["summary"][key]
-        methods.append({"method": name, "mae": round(m["mae"], 1), "p5": round(m["p5"], 1), "p95": round(m["p95"], 1)})
+        methods.append({"method": name, "mae": round(m["mae"], 1), "p5": round(m["p5"], 1), "p95": round(m["p95"], 1),
+                        "annualError": round(m["annual_abs"], 1)})
     comps = [{"component": c, "batch": round(r["summary"]["Batch"]["comp"][c], 1),
               "method2": round(r["summary"]["Method 2"]["comp"][c], 1)} for c in r["components"]]
     cov = [{"coverage": round(c["coverage"] * 100), "method2": round(c["mae_m2"], 1)} for c in r["coverage"]]
-    refs = {k: round(r["summary"][m]["mae"], 1) for k, m in
-            [("batch", "Batch"), ("method1", "Method 1"), ("method3", "Method 3")]}
+    refs = {k: round(float(np.mean([c[key] for c in r["coverage"]])), 1) for k, key in
+            [("batch", "mae_batch"), ("method1", "mae_m1"), ("method3", "mae_m3")]}
     extras = extra_chart_data(r, s, start)
     b, m2 = r["summary"]["Batch"]["mae"], r["summary"]["Method 2"]["mae"]
     headline = {"batchMae": round(b, 1), "method2Mae": round(m2, 1), "errorRatio": round(b / m2, 1),
-                "m2VsM3P": round(r["tests"]["M2_vs_M3"]["p"], 2), "workloads": r["n_workloads"],
+                "method3Mae": round(r["summary"]["Method 3"]["mae"], 1),
+                "controlMae": round(r["summary"]["Annualised Method 2"]["mae"], 1),
+                "equivalenceMarginPp": r["equivalence"]["hourly"]["margin"],
+                "m2VsM3MeanDiffPp": round(r["equivalence"]["hourly"]["mean_diff"], 1),
+                "method3AnnualError": round(r["summary"]["Method 3"]["annual_abs"], 1),
+                "materialityPct": r["materiality_pct"],
+                "method1OverMaterialityShare": round(r["summary"]["Method 1"]["share_over_materiality"]),
+                "method2OverMaterialityShare": round(r["summary"]["Method 2"]["share_over_materiality"]),
+                "workloads": r["n_workloads"],
                 "batchBias": round(r["summary"]["Batch"]["bias"], 1),
                 "method1AnnualError": round(r["summary"]["Method 1"]["annual_abs"], 1),
                 "method2AnnualError": round(r["summary"]["Method 2"]["annual_abs"], 1),
@@ -264,7 +274,24 @@ def chart_data():
 
 def coverage_quarter(r):
     run = next(x for x in r["sensitivity"] if x["key"] == "telemetry_coverage")["runs"][0]
-    return {"quarterCoverageMethod2Mae": round(run["m2"], 1), "quarterCoverageRatio": round(run["ratio"], 1)}
+    sys_lo, sys_hi = next(x for x in r["sensitivity"] if x["key"] == "systematic_scale")["runs"]
+    return {"quarterCoverageMethod2Mae": round(run["m2"], 1), "quarterCoverageRatio": round(run["ratio"], 1),
+            "halfSystematicMethod2Mae": round(sys_lo["m2"], 1), "doubleSystematicMethod2Mae": round(sys_hi["m2"], 1)}
+
+
+def confidence_matrix(r):
+    """(systematic, hourly) sigma in % of the best available signal; mirrors figs.py Figure 14."""
+    n, cal, dev = r["noise"], r["calibration"], r["truth_deviation"]
+    pc = lambda v: round(v * 100)
+    grid = (pc(cal["grid_bias"]), pc(n["ci_signal"]))
+    return [
+        ("Compute", [(0, pc(n["util"])), (pc(cal["power_model"]), pc(n["util"])), None, grid]),
+        ("Storage", [(0, pc(n["storage_meter"])), (pc(cal["storage_telemetry"]), pc(n["storage_meter"])), None, grid]),
+        ("Network", [(0, pc(n["bytes"])), (pc(cal["route_model"]), pc(n["route_energy"])),
+                     (pc(cal["path_weight_abs"]), 0), grid]),
+        ("CDN", [(0, pc(n["cdn_logs"])), (pc(dev["cdn"]), 0), None, grid]),
+        ("Device", [(0, pc(n["bytes"])), (pc(cal["device_telemetry"]), pc(n["device_class"])), None, grid]),
+    ]
 
 
 def extra_chart_data(r, s, week_start):
@@ -294,15 +321,9 @@ def extra_chart_data(r, s, week_start):
                  "batch": round(float(s["est_Batch"][sl][i] * 1000), 2),
                  "method2": round(float(s["est_Method_2"][sl][i] * 1000), 2),
                  "method3": round(float(s["est_Method_3"][sl][i] * 1000), 2)} for i in range(72)]
-    n = r["noise"]
-    pct = lambda v: round(v * 100)
     confidence = {"signals": CONFIDENCE_SIGNALS, "rows": [
-        {"component": "Compute", "values": [pct(n["util"]), pct(n["util"]), 0, pct(n["ci_signal"])]},
-        {"component": "Storage", "values": [pct(n["storage_meter"]), pct(n["storage_meter"]), 0, pct(n["ci_signal"])]},
-        {"component": "Network", "values": [pct(n["bytes"]), pct(n["route_energy"]), pct(n["route_energy"]), pct(n["ci_signal"])]},
-        {"component": "CDN", "values": [pct(n["cdn_logs"]), pct(n["cdn_logs"]), pct(n["bytes"]), pct(n["ci_signal"])]},
-        {"component": "Device", "values": [pct(n["bytes"]), pct(n["device_class"]), pct(n["bytes"]), pct(n["ci_signal"])]},
-    ]}
+        {"component": comp, "values": [None if v is None else {"systematic": v[0], "hourly": v[1]} for v in vals]}
+        for comp, vals in confidence_matrix(r)]}
     return dict(boundary=boundary, shares=shares, allocation=allocation, heat=heat,
                 coupling=coupling, confidence=confidence, n_workloads=r["n_workloads"])
 
@@ -328,6 +349,9 @@ def main(unpacked: Path, fe: Path):
         {"id": "table-2", "number": 2, "caption": table_caption(doc, "Table 2."), "header": t2[0], "rows": t2[1:]},
     ]
     weekly, methods, comps, cov, cov_refs, headline, ex = chart_data()
+    ctrl = json.loads((HERE / "results.json").read_text())["summary"]["Annualised Method 2"]
+    control = {"method": "Annualised M2", "mae": round(ctrl["mae"], 1), "p5": round(ctrl["p5"], 1),
+               "p95": round(ctrl["p95"], 1), "annualError": round(ctrl["annual_abs"], 1)}
 
     out_dir = fe / "src/constants/papers"
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -374,8 +398,11 @@ export const researchHeadline = {ts(headline)} as const
 /** One week of hourly emissions for the example workload, g CO2e per hour. */
 export const weeklySeries = {ts(weekly)}
 
-/** Hourly attribution error (WAPE) across workloads: mean and 5th-95th percentile. */
+/** Hourly attribution error (WAPE) across workloads: mean and 5th-95th percentile; mean absolute annual-total error. */
 export const methodError = {ts(methods)}
+
+/** Control: Method 2's annual totals spread evenly over the year (isolates temporal resolution). */
+export const methodErrorControl = {ts(control)}
 
 /** Component-level hourly error, conventional batch vs Method 2. */
 export const componentError = {ts(comps)}
@@ -399,7 +426,7 @@ export const eventHeatmap: number[] = {json.dumps(ex["heat"])}
 /** Three weekdays of origin grid intensity (gCO2/kWh) and attributed emissions (g CO2e per hour). */
 export const gridCoupling = {ts(ex["coupling"])}
 
-/** Assumed hourly uncertainty (1 sigma, %) by component and signal; 0 = known exactly. */
+/** Assumed uncertainty (1 sigma, %) of the best available signal: systematic (per workload) and hourly; null = known. */
 export const dataConfidence = {ts(ex["confidence"])}
 """
     (out_dir / "nearRealTimeCarbonAccounting.ts").write_text(content, encoding="utf8")

@@ -23,6 +23,8 @@ export const COMPONENT_COLORS: Record<string, string> = {
 export const INK = '#15221c'
 export const GRID = '#e4e3df'
 export const AXIS = '#6b6a66'
+/** Neutral fill for control series that are not one of the four methods. */
+export const MUTED = '#a3a29d'
 export const CHART_HEIGHT = 300
 export const TICK = { fill: AXIS, fontSize: 12 }
 export const HOVER_CURSOR = { fill: 'rgba(8,12,4,0.04)' }
